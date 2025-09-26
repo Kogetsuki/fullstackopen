@@ -1,15 +1,15 @@
 import { useState } from "react";
 
+const Button = ({ onClick, text }) =>
+  <button onClick={onClick}>
+    {text}
+  </button>
+
 const StatisticLine = ({ text, value }) =>
   <tr>
     <td>{text}: </td>
     <td>{value}</td>
   </tr>
-
-const Button = ({ onClick, text }) =>
-  <button onClick={onClick}>
-    {text}
-  </button>
 
 const Statistics = ({ good, neutral, bad }) => {
   const sum = good + neutral + bad;
