@@ -1,24 +1,46 @@
 import { useState } from "react";
 
-const Display = ({ text, value }) =>
-  <div>
-    {text}: {value}
-  </div>
+const StatisticLine = ({ text, value }) =>
+  <tr>
+    <td>{text}: </td>
+    <td>{value}</td>
+  </tr>
 
 const Button = ({ onClick, text }) =>
   <button onClick={onClick}>
     {text}
   </button>
 
+const Statistics = ({ good, neutral, bad }) => {
+  const sum = good + neutral + bad;
+
+  return (
+    <>
+      <h1>Statistics</h1>
+      {sum === 0
+        ?
+        <p>No feedback given</p>
+        :
+        <table>
+          <tbody>
+            <StatisticLine text="Good" value={good} />
+            <StatisticLine text="Neutral" value={neutral} />
+            <StatisticLine text="Bad" value={bad} />
+            <StatisticLine text="All" value={sum} />
+            <StatisticLine text="Average" value={(good - bad) / sum} />
+            <StatisticLine text="Positive" value={good / sum * 100 + ' %'} />
+          </tbody>
+        </table>
+      }
+    </>
+  )
+}
+
 const App = () => {
   // Save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-
-  const getSum = good + neutral + bad;
-  const getAverage = (good - bad) / getSum;
-  const getPositive = good / getSum * 100;
 
   return (
     <>
@@ -27,13 +49,7 @@ const App = () => {
       <Button onClick={() => setNeutral(neutral + 1)} text={"Neutral"} />
       <Button onClick={() => setBad(bad + 1)} text={"Bad"} />
 
-      <h1>Statistics</h1>
-      <Display text="Good" value={good} />
-      <Display text="Neutral" value={neutral} />
-      <Display text="Bad" value={bad} />
-      <Display text="All" value={getSum} />
-      <Display text="Average" value={getAverage} />
-      <Display text="Positive" value={getPositive} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   )
 }
