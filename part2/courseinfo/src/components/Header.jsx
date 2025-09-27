@@ -1,5 +1,5 @@
 const Header = ({ str }) => {
-  return <h1>{str}</h1>
+  return <h3>{str}</h3>
 }
 
 export default Header
