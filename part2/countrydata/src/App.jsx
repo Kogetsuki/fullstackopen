@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import countryService from './services/countries'
 import CountryDetails from './components/CountryDetails'
+import SearchInput from './components/SearchInput'
 
 const App = () => {
   const [search, setSearch] = useState('')
   const [countries, setCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
   useEffect(() => {
     countryService
@@ -18,6 +20,7 @@ const App = () => {
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
+    setSelectedCountry(null)
   }
 
 
@@ -42,6 +45,9 @@ const App = () => {
             {countriesToShow.map(country =>
               <li key={country.cca3}>
                 {country.name.common}
+                <button onClick={() => setSelectedCountry(country)}>
+                  Show
+                </button>
               </li>
             )}
           </ul>
@@ -51,17 +57,21 @@ const App = () => {
 
     if (nbCountries === 1)
       return <CountryDetails country={countriesToShow[0]} />
+
+    return null
   }
 
 
   return (
     <>
-      Find countries
-      <input
+      <SearchInput
         value={search}
         onChange={handleSearchChange}
       />
-      {renderCountries()}
+      {selectedCountry
+        ? <CountryDetails country={selectedCountry} />
+        : renderCountries()
+      }
     </>
   )
 }
