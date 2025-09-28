@@ -1,0 +1,28 @@
+@baseUrl = http://localhost:3001
+@id = 972
+
+
+### Get all persons
+GET {{baseUrl}}/api/persons
+
+
+### Get a person info
+GET {{baseUrl}}/api/persons/{{id}}
+
+
+### Get phonebook info
+GET {{baseUrl}}/info
+
+
+### Add person
+POST {{baseUrl}}/api/persons
+Content-Type: application/json
+
+{
+  "name": "Bastien",
+  "number": "Rozen"
+}
+
+
+### Delete person
+DELETE {{baseUrl}}/api/persons/{{id}}
