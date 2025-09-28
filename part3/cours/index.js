@@ -1,8 +1,6 @@
-const http = require('http')
 const express = require('express')
-
 const app = express()
-app.use(express.json())
+
 
 let notes = [
   {
@@ -21,6 +19,18 @@ let notes = [
     important: true
   }
 ]
+
+const requestLogger = (req, res, next) => {
+  console.log('Method:', req.method)
+  console.log('Path:', req.path)
+  console.log('Body:', req.body)
+  console.log('---')
+  next()
+}
+
+app.use(express.json())
+app.use(requestLogger)
+
 
 app.get('/', (request, response) =>
   response.send('<h1>Hello World!</h1>'))
@@ -70,6 +80,14 @@ const generateId = () => {
 
   return String(maxId + 1)
 }
+
+
+const unknowEndpoint = (req, res) =>
+  res.status(404).send({
+    error: 'unknow endpoint'
+  })
+
+app.use(unknowEndpoint)
 
 const PORT = 3001
 app.listen(PORT, () =>
