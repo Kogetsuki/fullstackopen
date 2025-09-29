@@ -8,12 +8,13 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('Some error happened...')
+  const [errorMessage, setErrorMessage] = useState(null)
 
 
   useEffect(() => {
     noteService
       .getAll()
+
       .then(initialNotes =>
         setNotes(initialNotes))
   }, [])
@@ -28,6 +29,7 @@ const App = () => {
 
     noteService
       .create(noteObject)
+
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
         setNewNote('')
@@ -35,10 +37,8 @@ const App = () => {
   }
 
 
-  const handleNoteChange = (event) => {
-    console.log(event.target.value)
+  const handleNoteChange = (event) =>
     setNewNote(event.target.value)
-  }
 
 
   const notesToShow = showAll
@@ -52,12 +52,14 @@ const App = () => {
 
     noteService
       .update(id, changedNote)
+
       .then(returnedNote => {
         setNotes(notes.map(note =>
           note.id === id
             ? returnedNote
             : note))
       })
+
       .catch(error => {
         setErrorMessage(`Note '${note.content}' was already removed from server`)
         setTimeout(() => setErrorMessage(null), 5000)

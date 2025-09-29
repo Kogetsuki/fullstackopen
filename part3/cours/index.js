@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 
 
@@ -29,28 +30,29 @@ const requestLogger = (req, res, next) => {
 }
 
 app.use(express.json())
+app.use(cors())
 app.use(requestLogger)
 
 
-app.get('/', (request, response) =>
-  response.send('<h1>Hello World!</h1>'))
+app.get('/', (req, res) =>
+  res.send('<h1>Hello World!</h1>'))
 
-app.get('/api/notes', (request, response) =>
-  response.json(notes))
+app.get('/api/notes', (req, res) =>
+  res.json(notes))
 
-app.get('/api/notes/:id', (request, response) => {
-  const id = request.params.id
+app.get('/api/notes/:id', (req, res) => {
+  const id = req.params.id
   const note = notes.find(note => note.id === id)
   note
-    ? response.json(note)
-    : response.status(404).end()
+    ? res.json(note)
+    : res.status(404).end()
 })
 
-app.post('/api/notes', (request, response) => {
-  const body = request.body
+app.post('/api/notes', (req, res) => {
+  const body = req.body
 
   if (!body.content)
-    return response.status(400).json({
+    return res.status(400).json({
       error: 'content missing'
     })
 
@@ -62,14 +64,14 @@ app.post('/api/notes', (request, response) => {
 
   notes = notes.concat(note)
 
-  response.json(note)
+  res.json(note)
 })
 
-app.delete('/api/notes/:id', (request, response) => {
-  const id = request.params.id
+app.delete('/api/notes/:id', (req, res) => {
+  const id = req.params.id
   notes = notes.filter(note => note.id !== id)
 
-  response.status(204).end()
+  res.status(204).end()
 })
 
 
@@ -89,6 +91,6 @@ const unknowEndpoint = (req, res) =>
 
 app.use(unknowEndpoint)
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () =>
   console.log(`Server running on port ${PORT}`))
