@@ -1,4 +1,5 @@
-@baseUrl = http://localhost:3001/api/notes
+@baseUrl = https://fullstackopen-pz0g.onrender.com/api/notes
+
 @id = 4
 
 

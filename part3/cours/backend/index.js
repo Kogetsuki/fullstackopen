@@ -1,5 +1,4 @@
 const express = require('express')
-const cors = require('cors')
 const app = express()
 
 
@@ -29,10 +28,9 @@ const requestLogger = (req, res, next) => {
   next()
 }
 
-app.use(express.json())
-app.use(express.static('dist'))
-app.use(cors())
 app.use(requestLogger)
+app.use(express.static('dist'))
+app.use(express.json())
 
 
 app.get('/', (req, res) =>
@@ -44,6 +42,7 @@ app.get('/api/notes', (req, res) =>
 app.get('/api/notes/:id', (req, res) => {
   const id = req.params.id
   const note = notes.find(note => note.id === id)
+
   note
     ? res.json(note)
     : res.status(404).end()
