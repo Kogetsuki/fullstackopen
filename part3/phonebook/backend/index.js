@@ -31,10 +31,15 @@ app.get('/api/persons', (req, res) => {
 })
 
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
   Person.findById(req.params.id)
     .then(person =>
-      res.json(person))
+      person
+        ? res.json(person)
+        : res.status(404).end())
+
+    .catch(error =>
+      next(error))
 })
 
 
@@ -80,9 +85,43 @@ app.delete('/api/persons/:id', (req, res) => {
     .then(result =>
       result
         ? res.status(204).end()
-        : res.status(404).send({ error: 'not found' })
-    )
+        : res.status(404).send({ error: 'not found' }))
+
+    .catch(error =>
+      next(error))
 })
+
+
+app.put('/api/persons/:id', (req, res, next) => {
+  const { name, number } = req.body
+  const opts = { new: true, runValidators: true, context: 'query' }
+
+  Person.findByIdAndUpdate(req.params.id, { name, number }, opts)
+    .then(updatedPerson =>
+      updatedPerson
+        ? res.json(updatedPerson)
+        : res.status(404).end())
+
+    .catch(error =>
+      next(error))
+})
+
+
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message)
+
+  switch (error.name) {
+    case 'CastError':
+      return res.status(400).send({ error: 'Malformatted ID' })
+
+    case 'ValidationError':
+      return res.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 
 const PORT = process.env.PORT
