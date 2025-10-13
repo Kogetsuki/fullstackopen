@@ -1,6 +1,6 @@
-@baseUrl = http://localhost:3001/api/notes
-# @baseUrl = https://fullstackopen-pz0g.onrender.com/api/notes
-@id = 4
+@localUrl = http://localhost:3001/api/notes
+@baseUrl = https://fullstackopen-pz0g.onrender.com/api/notes
+@id = 68ecb897e8ab001681da0b6e
 
 
 ### Get all notes
@@ -23,3 +23,13 @@ Content-Type: application/json
 
 ### Delete note
 DELETE {{baseUrl}}/{{id}}
+
+
+### Update note
+PUT {{localUrl}}/{{id}}
+Content-Type: application/json
+
+{
+  "content": "HTML is REALLY easy",
+  "important": false
+}
