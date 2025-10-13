@@ -1,5 +1,5 @@
-@baseUrl = http://localhost:3001
-@id = 3
+@baseUrl = https://phonebook-kj3t.onrender.com
+@id = 790
 
 
 ### Get all persons
@@ -20,7 +20,7 @@ Content-Type: application/json
 
 {
   "name": "Bastien",
-  "number": "Rozen"
+  "number": "00000000000000"
 }
 
 
