@@ -1,24 +1,13 @@
+require('dotenv').config()
 const express = require('express')
+const Note = require('./models/note')
+
 const app = express()
 
 
-let notes = [
-  {
-    id: "1",
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: "2",
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: "3",
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-]
+let notes = []
+
+/* ------------------- HELPERS ----------------------- */
 
 const requestLogger = (req, res, next) => {
   console.log('Method:', req.method)
@@ -32,21 +21,25 @@ app.use(requestLogger)
 app.use(express.static('dist'))
 app.use(express.json())
 
+/* ---------------------- HANDLERS ------------------- */
 
 app.get('/', (req, res) =>
   res.send('<h1>Hello World!</h1>'))
 
-app.get('/api/notes', (req, res) =>
-  res.json(notes))
+
+app.get('/api/notes', (req, res) => {
+  Note.find({})
+    .then(notes =>
+      res.json(notes))
+})
+
 
 app.get('/api/notes/:id', (req, res) => {
-  const id = req.params.id
-  const note = notes.find(note => note.id === id)
-
-  note
-    ? res.json(note)
-    : res.status(404).end()
+  Note.findById(req.params.id)
+    .then(note =>
+      res.json(note))
 })
+
 
 app.post('/api/notes', (req, res) => {
   const body = req.body
@@ -56,16 +49,16 @@ app.post('/api/notes', (req, res) => {
       error: 'content missing'
     })
 
-  const note = {
-    id: generateId(),
+  const note = new Note({
     content: body.content,
-    important: body.important || false
-  }
+    important: body.important || false,
+  })
 
-  notes = notes.concat(note)
-
-  res.json(note)
+  note.save()
+    .then(savedNote =>
+      res.json(savedNote))
 })
+
 
 app.delete('/api/notes/:id', (req, res) => {
   const id = req.params.id
@@ -75,15 +68,6 @@ app.delete('/api/notes/:id', (req, res) => {
 })
 
 
-const generateId = () => {
-  const maxId = notes.length > 0
-    ? Math.max(...notes.map(n => Number(n.id)))
-    : 0
-
-  return String(maxId + 1)
-}
-
-
 const unknowEndpoint = (req, res) =>
   res.status(404).send({
     error: 'unknow endpoint'
@@ -91,6 +75,6 @@ const unknowEndpoint = (req, res) =>
 
 app.use(unknowEndpoint)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () =>
   console.log(`Server running on port ${PORT}`))
