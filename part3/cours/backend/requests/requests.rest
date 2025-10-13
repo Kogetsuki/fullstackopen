@@ -12,11 +12,11 @@ GET {{baseUrl}}/{{id}}
 
 
 ### Create new note
-POST {{baseUrl}}
+POST {{localUrl}}
 Content-Type: application/json
 
 {
-  "content": "Ensure evrything still works",
+  "content": "",
   "important": true
 }
 

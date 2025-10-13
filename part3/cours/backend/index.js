@@ -47,13 +47,8 @@ app.get('/api/notes/:id', (req, res, next) => {
 })
 
 
-app.post('/api/notes', (req, res) => {
+app.post('/api/notes', (req, res, next) => {
   const body = req.body
-
-  if (!body.content)
-    return res.status(400).json({
-      error: 'content missing'
-    })
 
   const note = new Note({
     content: body.content,
@@ -63,6 +58,9 @@ app.post('/api/notes', (req, res) => {
   note.save()
     .then(savedNote =>
       res.json(savedNote))
+
+    .catch(error =>
+      next(error))
 })
 
 
@@ -107,8 +105,13 @@ app.use(unknowEndpoint)
 const errorHandler = (error, req, res, next) => {
   console.error(error.message)
 
-  if (error.name === 'CastError')
-    return res.status(400).send({ error: 'Malformatted ID' })
+  switch (error.name) {
+    case 'CastError':
+      return res.status(400).send({ error: 'Malformatted ID' })
+
+    case 'ValidationError':
+      return res.status(400).json({ error: error.message })
+  }
 
   next(error)
 }
