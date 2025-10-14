@@ -5,8 +5,6 @@ const Note = require('./models/note')
 const app = express()
 
 
-let notes = []
-
 /* ------------------- HELPERS ----------------------- */
 
 const requestLogger = (req, res, next) => {
@@ -66,7 +64,7 @@ app.post('/api/notes', (req, res, next) => {
 
 app.delete('/api/notes/:id', (req, res, next) => {
   Note.findByIdAndDelete(req.params.id)
-    .then(result =>
+    .then(() =>
       res.status(204).end())
 
     .catch(error =>
@@ -106,11 +104,11 @@ const errorHandler = (error, req, res, next) => {
   console.error(error.message)
 
   switch (error.name) {
-    case 'CastError':
-      return res.status(400).send({ error: 'Malformatted ID' })
+  case 'CastError':
+    return res.status(400).send({ error: 'Malformatted ID' })
 
-    case 'ValidationError':
-      return res.status(400).json({ error: error.message })
+  case 'ValidationError':
+    return res.status(400).json({ error: error.message })
   }
 
   next(error)
