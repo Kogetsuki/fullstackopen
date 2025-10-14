@@ -56,18 +56,8 @@ app.get('/info', (req, res) => {
 })
 
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body
-
-  if (!body.name)
-    return res.status(400).json({
-      error: 'name missing'
-    })
-
-  if (!body.number)
-    return res.status(400).json({
-      error: 'number missing'
-    })
 
   const person = new Person({
     name: body.name,
@@ -77,6 +67,9 @@ app.post('/api/persons', (req, res) => {
   person.save()
     .then(savedPerson =>
       res.json(savedPerson))
+
+    .catch(error =>
+      next(error))
 })
 
 

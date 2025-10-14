@@ -1,6 +1,6 @@
 @localUrl = http://localhost:3001
 @baseUrl = https://phonebook-kj3t.onrender.com
-@id = 68ecf7efda1dc92887efa82b
+@id = 68ed6136cbed5a1e933ba54e
 
 
 ### Get all persons
@@ -20,13 +20,13 @@ POST {{localUrl}}/api/persons
 Content-Type: application/json
 
 {
-  "name": "Bastien",
+  "name": "en",
   "number": "00000000000000"
 }
 
 
 ### Delete person
-DELETE {{baseUrl}}/api/persons/{{id}}
+DELETE {{localUrl}}/api/persons/{{id}}
 
 
 ### Update person
