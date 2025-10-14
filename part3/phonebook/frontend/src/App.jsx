@@ -42,6 +42,11 @@ const App = () => {
           setNewNumber('')
           showNotification(`Added ${personObject.name}`, 'success')
         })
+
+        .catch(error => {
+          console.log(error.response.data.error)
+          showNotification(error.response.data.error, 'error')
+        })
     }
 
     else if (window.confirm(`${personObject.name} is already added to phonebook, replace the old number with the new one ?`)) {
@@ -109,8 +114,8 @@ const App = () => {
 
   return (
     <>
-      <Notification notification={notification} />
       <h2>Phonebook</h2>
+      <Notification notification={notification} />
       <Filter
         value={filter}
         onChange={handleFilterChange}
