@@ -31,7 +31,7 @@ const AddPerson = () => {
 
   person
     .save()
-    .then(result => {
+    .then(() => {
       console.log(`Added ${person.name} number ${person.number} to phonebook`)
       mongoose.connection.close()
     })

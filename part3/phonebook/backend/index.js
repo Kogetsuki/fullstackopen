@@ -5,8 +5,6 @@ const Person = require('./models/person')
 
 const app = express()
 
-let persons = []
-
 /* ----------------- HELPERS --------------------- */
 
 app.use(express.static('dist'))
@@ -19,7 +17,7 @@ morgan.token('body', (req) =>
 )
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body', {
-  skip: (req, res) => req.path.startsWith('/.well-known/')
+  skip: (req) => req.path.startsWith('/.well-known/')
 }))
 
 /* -------------- HANDLERS ---------------- */
@@ -73,7 +71,7 @@ app.post('/api/persons', (req, res, next) => {
 })
 
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndDelete(req.params.id)
     .then(result =>
       result
@@ -103,13 +101,11 @@ app.put('/api/persons/:id', (req, res, next) => {
 const errorHandler = (error, req, res, next) => {
   console.error(error.message)
 
-  switch (error.name) {
-    case 'CastError':
-      return res.status(400).send({ error: 'Malformatted ID' })
+  if (error.name === 'CastError')
+    return res.status(400).send({ error: 'Malformatted ID' })
 
-    case 'ValidationError':
-      return res.status(400).json({ error: error.message })
-  }
+  if (error.name === 'ValidationError')
+    return res.status(400).json({ error: error.message })
 
   next(error)
 }
