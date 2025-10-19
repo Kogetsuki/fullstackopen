@@ -1,0 +1,18 @@
+@localUrl = http://localhost:3001/api/users
+# @localUrl = https://fullstackopen-pz0g.onrender.com/api/notes
+@id = 68ecb897e8ab001681da0b6e
+
+
+### Get all users
+GET {{localUrl}}
+
+
+### Create new user
+POST {{localUrl}}
+Content-Type: application/json
+
+{
+  "username": "root",
+  "name": "Superuser",
+  "password": "salainen"
+}
