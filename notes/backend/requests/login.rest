@@ -1,0 +1,11 @@
+@localUrl = http://localhost:3001/api/login
+
+
+### Log in
+POST {{localUrl}}
+Content-Type: application/json
+
+{
+  "username": "mluukkai",
+  "password": "salainen"
+}

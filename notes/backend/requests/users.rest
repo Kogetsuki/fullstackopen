@@ -12,7 +12,7 @@ POST {{localUrl}}
 Content-Type: application/json
 
 {
-  "username": "Me",
-  "name": "Kogetsuki",
-  "password": "grs"
+  "username": "mluukkai",
+  "name": "Matti Luukkainen",
+  "password": "salainen"
 }

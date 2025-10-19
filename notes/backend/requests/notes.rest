@@ -16,9 +16,9 @@ POST {{localUrl}}
 Content-Type: application/json
 
 {
-  "content": "User id of the note creator is at the start sent along the request",
+  "content": "The existing code and tests need to be changed when user is added to the system",
   "important": true,
-  "userId": "68f50d8802c3cb282e2a17b0"
+  "userId": "68f5313036cb697134782daa"
 }
 
 

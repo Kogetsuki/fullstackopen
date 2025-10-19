@@ -1,7 +1,7 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
 
-const url = process.env.TEST_MONGODB_URI
+const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
@@ -40,11 +40,11 @@ const notes = [
   { content: 'Browser can execute only JavaScript', important: false }
 ]
 
-Note.insertMany(notes)
-  .then(() => {
-    console.log('notes saved')
-    mongoose.connection.close()
-  })
+// Note.insertMany(notes)
+//   .then(() => {
+//     console.log('notes saved')
+//     mongoose.connection.close()
+//   })
 
 // Note.deleteMany({})
 //   .then(() => {
@@ -52,11 +52,11 @@ Note.insertMany(notes)
 //     mongoose.connection.close()
 //   })
 
-// User.deleteMany({})
-//   .then(() => {
-//     console.log('users deleted')
-//     mongoose.connection.close()
-//   })
+User.deleteMany({})
+  .then(() => {
+    console.log('users deleted')
+    mongoose.connection.close()
+  })
 
 // Note.find({}).then((result) => {
 //   result.forEach((note) => {
