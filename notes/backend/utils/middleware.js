@@ -32,6 +32,9 @@ const errorHandler = (error, req, res, next) => {
     case 'JsonWebTokenError':
       return res.status(401).json({ error: 'invalid token' })
 
+    case 'TokenExpiredError':
+      return res.status(401).json({ error: 'token expired' })
+
     default:
       break
   }
