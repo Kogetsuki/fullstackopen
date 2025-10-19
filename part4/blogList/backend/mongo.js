@@ -13,7 +13,14 @@ const blogSchema = new mongoose.Schema({
   likes: Number
 })
 
+const userSchema = new mongoose.Schema({
+  username: String,
+  name: String,
+  passwordHash: String
+})
+
 const Blog = mongoose.model('Blog', blogSchema)
+const User = mongoose.model('User', userSchema)
 
 const blogs = [
   {
@@ -54,8 +61,22 @@ const blogs = [
   }
 ]
 
-Blog.insertMany(blogs)
+const users = [
+  { username: 'root', name: 'Anonymous', passwordHash: 'osef' }
+]
+
+// User.deleteMany({})
+//   .then(() =>
+//     mongoose.connection.close())
+
+User.insertMany(users)
   .then(() => {
-    console.log('blogs saved')
+    console.log('users saved')
     mongoose.connection.close()
   })
+
+// Blog.insertMany(blogs)
+//   .then(() => {
+//     console.log('blogs saved')
+//     mongoose.connection.close()
+//   })
