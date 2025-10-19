@@ -35,10 +35,9 @@ notesRouter.delete('/:id', async (req, res) => {
 
 
 notesRouter.put('/:id', (req, res, next) => {
-  const { content, important } = req.body
   const opts = { new: true, runValidators: true, context: 'query' }
 
-  Note.findByIdAndUpdate(req.params.id, { content, important }, opts)
+  Note.findByIdAndUpdate(req.params.id, req.body, opts)
     .then(updatedNote =>
       updatedNote
         ? res.json(updatedNote)
