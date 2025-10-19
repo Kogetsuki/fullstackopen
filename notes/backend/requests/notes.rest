@@ -1,6 +1,7 @@
 @localUrl = http://localhost:3001/api/notes
 # @baseUrl = https://fullstackopen-pz0g.onrender.com/api/notes
-@id = 68f524d48e3b10f19fb4a3cb
+@id =
+@jwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2OGY1MzEzMDM2Y2I2OTcxMzQ3ODJkYWEiLCJpYXQiOjE3NjA5MDY2NDV9.Sb1j6l8FxWdon_vD2uGa-HI8e1grSrQcgxH71vtQyVs
 
 
 ### Get all notes
@@ -14,11 +15,11 @@ GET {{localUrl}}/{{id}}
 ### Create new note
 POST {{localUrl}}
 Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
 
 {
-  "content": "The existing code and tests need to be changed when user is added to the system",
-  "important": true,
-  "userId": "68f5313036cb697134782daa"
+  "content": "Single page apps use token based auth",
+  "important": false
 }
 
 

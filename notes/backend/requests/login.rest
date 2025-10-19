@@ -1,7 +1,7 @@
 @localUrl = http://localhost:3001/api/login
 
 
-### Log in
+### Login to get valid JWT
 POST {{localUrl}}
 Content-Type: application/json
 
