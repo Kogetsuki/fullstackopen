@@ -1,14 +1,14 @@
 @localUrl = http://localhost:3001/api/notes
-@baseUrl = https://fullstackopen-pz0g.onrender.com/api/notes
-@id = 68ecb897e8ab001681da0b6e
+# @baseUrl = https://fullstackopen-pz0g.onrender.com/api/notes
+@id = 68f524d48e3b10f19fb4a3cb
 
 
 ### Get all notes
-GET {{baseUrl}}
+GET {{localUrl}}
 
 
 ### Get a note by id
-GET {{baseUrl}}/{{id}}
+GET {{localUrl}}/{{id}}
 
 
 ### Create new note
@@ -16,13 +16,14 @@ POST {{localUrl}}
 Content-Type: application/json
 
 {
-  "content": "",
-  "important": true
+  "content": "User id of the note creator is at the start sent along the request",
+  "important": true,
+  "userId": "68f50d8802c3cb282e2a17b0"
 }
 
 
 ### Delete note
-DELETE {{baseUrl}}/{{id}}
+DELETE {{localUrl}}/{{id}}
 
 
 ### Update note

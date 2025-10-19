@@ -1,5 +1,5 @@
 @localUrl = http://localhost:3001/api/users
-# @localUrl = https://fullstackopen-pz0g.onrender.com/api/notes
+# @baseUrl = https://fullstackopen-pz0g.onrender.com/api/notes
 @id = 68ecb897e8ab001681da0b6e
 
 
@@ -12,7 +12,7 @@ POST {{localUrl}}
 Content-Type: application/json
 
 {
-  "username": "root",
-  "name": "Superuser",
-  "password": "salainen"
+  "username": "Me",
+  "name": "Kogetsuki",
+  "password": "grs"
 }
