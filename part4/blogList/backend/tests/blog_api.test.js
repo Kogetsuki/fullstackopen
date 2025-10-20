@@ -2,15 +2,30 @@ const { describe, test, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 const app = require('../app')
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  await Blog.insertMany(helper.initialBlogs)
+  await User.deleteMany({})
+
+  // Create test user
+  const passwordHash = await bcrypt.hash('sekret', 10)
+  const user = new User({ username: 'root', name: 'Superuser', passwordHash })
+  const savedUser = await user.save()
+
+  // Generate token for user
+  token = jwt.sign({ username: savedUser.username, id: savedUser._id }, process.env.SECRET)
+
+  // Insert initial blogs
+  const blogsWithUser = helper.initialBlogs.map(b => ({ ...b, user: savedUser._id }))
+  await Blog.insertMany(blogsWithUser)
 })
 
 
@@ -34,6 +49,7 @@ describe('standard API calls', () => {
     }
 
     await api.post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -46,11 +62,26 @@ describe('standard API calls', () => {
   })
 
 
+  test('create blog with no token', async () => {
+    const newBlog = {
+      title: "No token",
+      author: "Anonymous",
+      url: "http://fail.com",
+      likes: 10
+    }
+
+    await api.post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
+  })
+
+
   test('delete blog', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
     await api.delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
@@ -64,6 +95,7 @@ describe('standard API calls', () => {
   test('delete blog with wrong id', async () => {
     const invalidId = '5a3d5da59070081a82a3445'
     await api.delete(`/api/blogs/${invalidId}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(400)
   })
 
@@ -122,6 +154,7 @@ describe('property missing', () => {
 
     const res =
       await api.post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -138,6 +171,7 @@ describe('property missing', () => {
     }
 
     await api.post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(blogWithoutTitle)
       .expect(400)
 
@@ -152,6 +186,7 @@ describe('property missing', () => {
     }
 
     await api.post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(blogWithoutUrl)
       .expect(400)
   })
