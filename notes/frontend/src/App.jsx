@@ -10,6 +10,8 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
 
   useEffect(() => {
@@ -29,6 +31,7 @@ const App = () => {
 
     noteService
       .create(noteObject)
+
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
         setNewNote('')
@@ -42,19 +45,27 @@ const App = () => {
 
     noteService
       .update(id, changedNote)
+
       .then(returnedNote =>
         setNotes(notes.map(note =>
-          note.id === id
-            ? returnedNote
-            : note
+          note.id !== id
+            ? note
+            : returnedNote
         ))
       )
-      .catch(error => {
+
+      .catch(() => {
         setErrorMessage(`Note '${note.content}' was already removed from server`)
         setTimeout(() =>
           setErrorMessage(null), 5000)
         setNotes(notes.filter(n => n.id !== id))
       })
+  }
+
+
+  const handleLogin = event => {
+    event.preventDefault()
+    console.log('logging in with', username, password)
   }
 
 
@@ -72,11 +83,40 @@ const App = () => {
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
+
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <div>
+          <label>
+            Username
+            <input
+              type="text"
+              value={username}
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </label>
+        </div>
+
+        <div>
+          <label>
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </label>
+        </div>
+
+        <button type="submit">Login</button>
+      </form>
+
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           Show {showAll ? 'important' : 'all'}
         </button>
       </div>
+
       <ul>
         {notesToShow.map(note => (
           <Note
@@ -86,10 +126,12 @@ const App = () => {
           />
         ))}
       </ul>
+
       <form onSubmit={addNote}>
         <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
+        <button type="submit">Save</button>
       </form>
+
       <Footer />
     </div>
   )
