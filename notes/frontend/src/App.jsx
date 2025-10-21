@@ -65,12 +65,23 @@ const App = () => {
   }
 
 
+  const handleNoteChange = event =>
+    setNewNote(event.target.value)
+
+
+  const notesToShow =
+    showAll
+      ? notes
+      : notes.filter(note => note.important)
+
+
   const handleLogin = async event => {
     event.preventDefault()
 
     try {
       const user = await loginService.login({ username, password })
 
+      noteService.setToken(user.token)
       setUser(user)
       setUsername(username)
       setPassword(password)
@@ -81,16 +92,6 @@ const App = () => {
         setErrorMessage(null), 5000)
     }
   }
-
-
-  const handleNoteChange = event =>
-    setNewNote(event.target.value)
-
-
-  const notesToShow =
-    showAll
-      ? notes
-      : notes.filter(note => note.important)
 
 
   const loginForm = () => (
