@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import blogService from '../services/blogs'
 
 const Blog = ({ blog }) => {
   const [showDetails, setShowDetails] = useState(false)
+  const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
     paddingTop: 10,
@@ -13,6 +15,17 @@ const Blog = ({ blog }) => {
 
   const handleShowDetailsChange = () =>
     setShowDetails(!showDetails)
+
+  const likeBlog = async () => {
+    const updatedBlog = {
+      ...blog,
+      user: blog.user.id,
+      likes: likes + 1,
+    }
+
+    await blogService.update(blog.id, updatedBlog)
+    setLikes(likes + 1)
+  }
 
   return (
     <div style={blogStyle}>
@@ -26,8 +39,10 @@ const Blog = ({ blog }) => {
         <>
           <div>{blog.url}</div>
           <div>
-            likes {blog.likes}
-            <button>Like</button>
+            likes {likes}
+            <button onClick={likeBlog}>
+              Like
+            </button>
           </div>
           <div>{blog.user.name}</div>
         </>
