@@ -4,18 +4,14 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import UserInfo from './components/UserInfo'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Togglable from '../../../../notes/frontend/src/components/Togglable'
 
 const App = () => {
-  const [notification, setNotification] = useState(null)
-
-  const [blogs, setBlogs] = useState([])
   const blogFormRef = useRef()
-
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
 
@@ -45,27 +41,12 @@ const App = () => {
   }, [])
 
 
-  const addBlog = async (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-
-    const returnedBlog = await blogService.create(blogObject)
-    setBlogs(blogs.concat(returnedBlog))
-
-    showNotification(`A new blog. ${blogObject.title} by ${blogObject.author} added`, 'success')
-  }
-
-
-  const handleLogin = async event => {
-    event.preventDefault()
-
+  const handleLogin = async ({ username, password }) => {
     try {
       const user = await loginService.login({ username, password })
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
-
       setUser(user)
-      setUsername(username)
-      setPassword(password)
     }
     catch {
       showNotification('Wrong username or password', 'error')
@@ -73,13 +54,19 @@ const App = () => {
   }
 
 
-  const handleLogout = event => {
-    event.preventDefault()
+  const handleLogout = () => {
     window.localStorage.removeItem('loggedUser')
+    setUser(null)
+  }
 
-    setUser('')
-    setUsername('')
-    setPassword('')
+
+  const addBlog = async (blogObject) => {
+    blogFormRef.current.toggleVisibility()
+
+    const returnedBlog = await blogService.create(blogObject)
+    setBlogs(blogs.concat(returnedBlog))
+
+    showNotification(`A new blog. ${blogObject.title} by ${blogObject.author} added`, 'success')
   }
 
 
@@ -94,15 +81,7 @@ const App = () => {
     <>
       <Notification notification={notification} />
 
-      {!user &&
-        <LoginForm
-          username={username}
-          password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-        />
-      }
+      {!user && <LoginForm handleLogin={handleLogin} />}
 
       {user &&
         <>
