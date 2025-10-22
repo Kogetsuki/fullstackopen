@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import BlogDisplay from './components/BlogDisplay'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
@@ -6,18 +6,17 @@ import UserInfo from './components/UserInfo'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from '../../../../notes/frontend/src/components/Togglable'
 
 const App = () => {
   const [notification, setNotification] = useState(null)
+
   const [blogs, setBlogs] = useState([])
+  const blogFormRef = useRef()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
 
   useEffect(() => {
@@ -46,21 +45,11 @@ const App = () => {
   }, [])
 
 
-  const addBlog = async event => {
-    event.preventDefault()
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url,
-      likes: 0
-    }
+  const addBlog = async (blogObject) => {
+    blogFormRef.current.toggleVisibility()
 
     const returnedBlog = await blogService.create(blogObject)
-
     setBlogs(blogs.concat(returnedBlog))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
 
     showNotification(`A new blog. ${blogObject.title} by ${blogObject.author} added`, 'success')
   }
@@ -123,15 +112,9 @@ const App = () => {
             handleLogout={handleLogout}
           />
 
-          <BlogForm
-            title={title}
-            author={author}
-            url={url}
-            setTitle={setTitle}
-            setAuthor={setAuthor}
-            setUrl={setUrl}
-            addBlog={addBlog}
-          />
+          <Togglable buttonLabel='New blog' ref={blogFormRef}>
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
 
           <BlogDisplay
             blogs={blogs}
