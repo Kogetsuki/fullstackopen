@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = import.meta.env.VITE_BACKEND_URL
+const baseUrl = '/api/notes'
 
 
 let token = null
@@ -10,7 +10,7 @@ const setToken = newToken =>
 
 
 const getAll = async () => {
-  const res = axios.get(baseUrl)
+  const res = await axios.get(baseUrl)
   return res.data
 }
 
