@@ -95,9 +95,7 @@ const App = () => {
             <BlogForm createBlog={addBlog} />
           </Togglable>
 
-          <BlogDisplay
-            blogs={blogs}
-          />
+          <BlogDisplay blogs={blogs} />
         </>
       }
     </>
