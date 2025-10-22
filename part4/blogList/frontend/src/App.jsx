@@ -2,13 +2,13 @@ import { useState, useEffect, use } from 'react'
 import BlogDisplay from './components/BlogDisplay'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import UserInfo from './components/UserInfo'
 import BlogForm from './components/BlogForm'
+import blogService from './services/blogs'
+import loginService from './services/login'
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
   const [blogs, setBlogs] = useState([])
 
   const [username, setUsername] = useState('')
@@ -27,9 +27,7 @@ const App = () => {
         setBlogs(blogs)
       }
       catch {
-        setErrorMessage('Failed to fetch blogs')
-        setTimeout(() =>
-          setErrorMessage(null), 5000)
+        showNotification('Failed to fetch blogs', 'error')
       }
     }
 
@@ -58,10 +56,13 @@ const App = () => {
     }
 
     const returnedBlog = await blogService.create(blogObject)
+
     setBlogs(blogs.concat(returnedBlog))
     setTitle('')
     setAuthor('')
     setUrl('')
+
+    showNotification(`A new blog. ${blogObject.title} by ${blogObject.author} added`, 'success')
   }
 
 
@@ -78,9 +79,7 @@ const App = () => {
       setPassword(password)
     }
     catch {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() =>
-        setErrorMessage(null), 5000)
+      showNotification('Wrong username or password', 'error')
     }
   }
 
@@ -95,9 +94,17 @@ const App = () => {
   }
 
 
+  const showNotification = (message, type, timeToShow = 3000) => {
+    setNotification({ message, type })
+    setTimeout(() =>
+      setNotification(null), timeToShow)
+  }
+
+
   return (
     <>
-      <Notification message={errorMessage} />
+      <Notification notification={notification} />
+
       {!user &&
         <LoginForm
           username={username}
