@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, user, handleDelete }) => {
   const [showDetails, setShowDetails] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
+
 
   const blogStyle = {
     paddingTop: 10,
@@ -13,8 +14,10 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
+
   const handleShowDetailsChange = () =>
     setShowDetails(!showDetails)
+
 
   const likeBlog = async () => {
     const updatedBlog = {
@@ -26,6 +29,17 @@ const Blog = ({ blog }) => {
     await blogService.update(blog.id, updatedBlog)
     setLikes(likes + 1)
   }
+
+
+  const deleteBlog = async () => {
+    if (window.confirm(`Delete blog ${blog.title} by ${blog.author}?`))
+      await handleDelete(blog.id)
+  }
+
+
+  const showDelete =
+    blog.user.name === user.name
+
 
   return (
     <div style={blogStyle}>
@@ -45,10 +59,17 @@ const Blog = ({ blog }) => {
             </button>
           </div>
           <div>{blog.user.name}</div>
+
+          {showDelete && (
+            <button onClick={deleteBlog}>
+              Remove
+            </button>
+          )}
         </>
       )}
     </div>
   )
 }
+
 
 export default Blog

@@ -70,6 +70,14 @@ const App = () => {
   }
 
 
+  const deleteBlog = async (id) => {
+    await blogService.remove(id)
+
+    setBlogs(blogs.filter(blog => blog.id !== id))
+    showNotification('Blog deleted', 'success')
+  }
+
+
   const showNotification = (message, type, timeToShow = 3000) => {
     setNotification({ message, type })
     setTimeout(() =>
@@ -95,11 +103,15 @@ const App = () => {
             <BlogForm createBlog={addBlog} />
           </Togglable>
 
-          <BlogDisplay blogs={blogs} />
+          <BlogDisplay
+            blogs={blogs}
+            user={user}
+            handleDelete={deleteBlog}
+          />
         </>
       }
     </>
   )
 }
-
+// TODO: when liking a blog and it exceeds the one above in likes number, swap them
 export default App
