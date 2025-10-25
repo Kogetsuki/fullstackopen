@@ -42,7 +42,7 @@ const Blog = ({ blog, user, handleDelete }) => {
 
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={handleShowDetailsChange}>
         {showDetails
