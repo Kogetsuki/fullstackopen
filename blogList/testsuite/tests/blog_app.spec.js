@@ -1,5 +1,5 @@
 const { test, describe, expect, beforeEach } = require('@playwright/test')
-const { loginWith, createBlog } = require('./helper')
+const { loginWith, createBlog, expandAllBlogs, refreshBlogs } = require('./helper')
 
 describe('Blog app', () => {
   beforeEach(async ({ page, request }) => {
@@ -72,7 +72,7 @@ describe('Blog app', () => {
         await expect(blogLocator).not.toBeVisible()
       })
 
-      test.only('only the user who created the blog sees its delete button', async ({ page, request }) => {
+      test('only the user who created the blog sees its delete button', async ({ page, request }) => {
         await page.getByRole('button', { name: 'Logout' }).click()
         await request.post('/api/users', {
           data: {
@@ -85,6 +85,48 @@ describe('Blog app', () => {
         await page.getByRole('button', { name: 'View' }).click()
 
         await expect(page.getByRole('button', { name: 'Remove' })).not.toBeVisible()
+      })
+    })
+
+    describe('multiple blogs exist', () => {
+      beforeEach(async ({ page }) => {
+        await createBlog(page, 'Least liked blog', 'Author A', 'http://a.com')
+        await createBlog(page, 'Medium liked blog', 'Author B', 'http://b.com')
+        await createBlog(page, 'Most liked blog', 'Author C', 'http://c.com')
+      })
+
+      test.only('blogs are ordered by number of likes descendingly', async ({ page, request }) => {
+        await expandAllBlogs(page)
+
+        // Like blogs different numbers of times
+        const blogs = [
+          { title: 'Least liked blog', likes: 1 },
+          { title: 'Medium liked blog', likes: 3 },
+          { title: 'Most liked blog', likes: 5 }
+        ]
+
+        for (const { title, likes } of blogs) {
+          const blog = page.locator('.blog', { hasText: title })
+          const likeButton = blog.getByRole('button', { name: 'Like' })
+
+          for (let i = 0; i < likes; i++)
+            await likeButton.click()
+        }
+
+        await page.waitForFunction(() => {
+          const blogs = Array.from(document.querySelectorAll('.blog'))
+          return blogs[0]?.textContent.includes('Most liked blog')
+        })
+
+        // Collect blogs in displayed order
+        const blogTitles =
+          await page.$$eval('.blog .blog-title', blogs =>
+            blogs.map(b => b.textContent))
+
+        // Test order
+        expect(blogTitles[0]).toContain('Most liked blog')
+        expect(blogTitles[1]).toContain('Medium liked blog')
+        expect(blogTitles[2]).toContain('Least liked blog')
       })
     })
   })

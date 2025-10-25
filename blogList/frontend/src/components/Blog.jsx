@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, user, handleDelete }) => {
+const Blog = ({ blog, user, handleDelete, handleLike }) => {
   const [showDetails, setShowDetails] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
 
@@ -20,13 +20,7 @@ const Blog = ({ blog, user, handleDelete }) => {
 
 
   const likeBlog = async () => {
-    const updatedBlog = {
-      ...blog,
-      user: blog.user.id,
-      likes: likes + 1,
-    }
-
-    await blogService.update(blog.id, updatedBlog)
+    handleLike(blog.id)
     setLikes(likes + 1)
   }
 
@@ -38,12 +32,17 @@ const Blog = ({ blog, user, handleDelete }) => {
 
 
   const showDelete =
-    blog.user.name === user.name
+    blog.user.id === user.id
 
 
   return (
     <div className='blog' style={blogStyle}>
-      {blog.title} {blog.author}
+      <span className='blog-title'>
+        {blog.title}
+      </span>
+      <span className='blog-author'>
+        {blog.author}
+      </span>
       <button onClick={handleShowDetailsChange}>
         {showDetails
           ? 'Hide'

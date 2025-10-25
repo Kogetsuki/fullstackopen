@@ -79,6 +79,29 @@ const App = () => {
   }
 
 
+  const likeBlog = async (id) => {
+    const blogToLike = blogs.find(blog => blog.id === id)
+
+    const updatedBlogForServer =
+      await blogService.update(id, {
+        ...blogToLike,
+        user: blogToLike.user.id,
+        likes: blogToLike.likes + 1
+      })
+
+    const updatedBlog = {
+      ...updatedBlogForServer,
+      user: blogToLike.user
+    }
+
+    setBlogs(blogs.map(blog =>
+      blog.id !== id
+        ? blog
+        : updatedBlog
+    ))
+  }
+
+
   const showNotification = (message, type, timeToShow = 3000) => {
     setNotification({ message, type })
     setTimeout(() =>
@@ -108,6 +131,7 @@ const App = () => {
             blogs={blogs}
             user={user}
             handleDelete={deleteBlog}
+            handleLike={likeBlog}
           />
         </>
       }

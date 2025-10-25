@@ -10,6 +10,22 @@ const createBlog = async (page, title, author, url) => {
   await page.getByLabel('Author').fill(author)
   await page.getByLabel('Url').fill(url)
   await page.getByRole('button', { name: 'Create' }).click()
+
+  await page.locator('.blog', { hasText: title }).waitFor()
 }
 
-export { loginWith, createBlog }
+const expandAllBlogs = async (page) => {
+  while (true) {
+    const viewButton = page.getByRole('button', { name: 'View' }).first()
+    const count = await page.getByRole('button', { name: 'View' }).count()
+    if (count === 0)
+      break
+    await viewButton.click()
+  }
+}
+
+export {
+  loginWith,
+  createBlog,
+  expandAllBlogs
+}

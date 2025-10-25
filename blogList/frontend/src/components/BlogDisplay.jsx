@@ -1,6 +1,6 @@
 import Blog from './Blog'
 
-const BlogDisplay = ({ blogs, user, handleDelete }) => {
+const BlogDisplay = ({ blogs, user, handleDelete, handleLike }) => {
   return (
     <>
       {[...blogs]
@@ -11,6 +11,7 @@ const BlogDisplay = ({ blogs, user, handleDelete }) => {
             blog={blog}
             user={user}
             handleDelete={handleDelete}
+            handleLike={handleLike}
           />
         )}
     </>
