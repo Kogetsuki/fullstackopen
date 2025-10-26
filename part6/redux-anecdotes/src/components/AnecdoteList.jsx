@@ -21,19 +21,23 @@ const Anecdote = ({ anecdote, handleVote }) => {
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state)
+
+  const anecdotes = useSelector(({ anecdotes, filter }) => {
+    return anecdotes.filter(anecdote =>
+      anecdote.content.includes(filter))
+  })
+
 
   return (
     <>
-      <h2>Anecdotes</h2>
-
       {anecdotes
         .sort((a, b) => b.votes - a.votes)
         .map(anecdote =>
           <Anecdote
             key={anecdote.id}
             anecdote={anecdote}
-            handleVote={() => dispatch(vote(anecdote.id))}
+            handleVote={() =>
+              dispatch(vote(anecdote.id))}
           />
         )}
     </>
