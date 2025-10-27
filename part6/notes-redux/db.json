@@ -14,6 +14,11 @@
       "id": "0b88",
       "content": "COUCOU",
       "important": false
+    },
+    {
+      "id": "fb21",
+      "content": "redux_tool",
+      "important": false
     }
   ]
 }

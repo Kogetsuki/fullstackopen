@@ -1,4 +1,5 @@
 import { createSlice, current } from '@reduxjs/toolkit'
+import noteService from '../services/notes'
 
 
 const noteSlice = createSlice({
@@ -33,5 +34,22 @@ const noteSlice = createSlice({
 })
 
 
-export const { setNotes, createNote, toggleImportanceOf } = noteSlice.actions
+const { setNotes, createNote } = noteSlice.actions
+
+export const initializeNotes = () => {
+  return async (dispatch) => {
+    const notes = await noteService.getAll()
+    dispatch(setNotes(notes))
+  }
+}
+
+export const appendNotes = (content) => {
+  return async (dispatch) => {
+    const newNote = await noteService.createNew(content)
+    dispatch(createNote(newNote))
+  }
+}
+
+
+export const { toggleImportanceOf } = noteSlice.actions
 export default noteSlice.reducer

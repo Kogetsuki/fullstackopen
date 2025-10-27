@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { createNote } from '../reducers/noteReducer'
-import noteService from '../services/notes'
+import { appendNotes } from '../reducers/noteReducer'
 
 
 const NoteForm = () => {
@@ -12,8 +11,7 @@ const NoteForm = () => {
     const content = event.target.note.value
     event.target.note.value = ''
 
-    const newNote = await noteService.createNew(content)
-    dispatch(createNote(newNote))
+    dispatch(appendNotes(content))
   }
 
 
