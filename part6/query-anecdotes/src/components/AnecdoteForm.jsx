@@ -7,6 +7,7 @@ const AnecdoteForm = () => {
   const queryClient = useQueryClient()
   const { setNotification } = useContext(NotificationContext)
 
+
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
     onSuccess: (newAnecdote) => {
@@ -18,6 +19,7 @@ const AnecdoteForm = () => {
     }
   })
 
+
   const onCreate = async (event) => {
     event.preventDefault()
 
@@ -26,6 +28,7 @@ const AnecdoteForm = () => {
 
     newAnecdoteMutation.mutate({ content, votes: 0 })
   }
+
 
   return (
     <div>
