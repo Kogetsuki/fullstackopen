@@ -19,7 +19,22 @@ const createNew = async (content) => {
   })
 
   if (!res.ok)
-    throw new Error('Faileed to create new anecdote')
+    throw new Error('Failed to create new anecdote')
+
+  return res.json()
+}
+
+
+const update = async (anecdote) => {
+  const url = `${baseUrl}/${anecdote.id}`
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(anecdote)
+  })
+
+  if (!res.ok)
+    throw new Error('Failed to update anecdote')
 
   return res.json()
 }
@@ -27,5 +42,6 @@ const createNew = async (content) => {
 
 export default {
   getAll,
-  createNew
+  createNew,
+  update
 }
