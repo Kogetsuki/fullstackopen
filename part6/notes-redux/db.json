@@ -1,24 +1,39 @@
 {
   "notes": [
     {
-      "content": "reducer defines how redux store works",
+      "content": "React Query simplifies the communication with backend",
       "important": true,
       "id": "1"
     },
     {
-      "content": "state of store can contain any data",
-      "important": false,
+      "content": "useReducer is an alternative way for data management",
+      "important": true,
       "id": "2"
     },
     {
-      "id": "0b88",
+      "id": "f2fb",
+      "content": "New optimization",
+      "important": true
+    },
+    {
+      "id": "5668",
       "content": "COUCOU",
+      "important": true
+    },
+    {
+      "id": "fe0e",
+      "content": "redux_tool",
+      "important": true
+    },
+    {
+      "id": "ec11",
+      "content": "test",
       "important": false
     },
     {
-      "id": "fb21",
-      "content": "redux_tool",
-      "important": false
+      "id": "f070",
+      "content": "new",
+      "important": true
     }
   ]
 }
