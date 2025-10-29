@@ -13,6 +13,7 @@ import Users from './components/Users'
 import Login from './components/Login'
 import Notes from './components/Notes'
 import Note from './components/Note'
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -57,22 +58,9 @@ const App = () => {
 
   return (
     <div className='container'>
-      {/* <div>
-        <Link style={padding} to="/">home</Link>
-        <Link style={padding} to="/notes">notes</Link>
-        <Link style={padding} to="/users">users</Link>
-        {user
-          ? <em>{user} logged in</em>
-          : <Link style={padding} to="/login">login</Link>
-        }
-      </div> */}
       <Menu user={user} />
 
-      {(message &&
-        <Alert variant='success'>
-          {message}
-        </Alert>
-      )}
+      <Notification message={message} />
 
       <Routes>
         <Route path="/notes/:id" element={<Note note={note} />} />
