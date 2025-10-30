@@ -1,8 +1,22 @@
-const UserInfo = ({ user, handleLogout }) => {
+import { useDispatch, useSelector } from 'react-redux'
+import { clearUser } from '../reducers/userReducer'
+import { sendNotification } from '../reducers/notificationReducer'
+
+const UserInfo = () => {
+  const user = useSelector(state => state.user)
+  const dispatch = useDispatch()
+
+  const Logout = () => {
+    window.localStorage.removeItem('loggedUser')
+    dispatch(clearUser())
+    dispatch(sendNotification('Logged out', 'success'))
+  }
+
+
   return (
     <>
       {user.name} logged in
-      <button onClick={handleLogout}>
+      <button onClick={Logout}>
         Logout
       </button>
     </>

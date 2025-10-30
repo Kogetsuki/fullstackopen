@@ -1,33 +1,34 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { appendBlog } from '../reducers/blogReducer'
+import { sendNotification } from '../reducers/notificationReducer'
+import { useField } from '../hooks'
 
-const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
-  const addBlog = (event) => {
+const BlogForm = () => {
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('url')
+
+  const dispatch = useDispatch()
+
+  const addBlog = async (event) => {
     event.preventDefault()
 
-    createBlog({
-      title: title,
-      author: author,
-      url: url,
+    dispatch(appendBlog({
+      title: title.value,
+      author: author.value,
+      url: url.value,
       likes: 0
-    })
+    }))
 
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    dispatch(sendNotification(`A new blog. ${title.value} by ${author.value} added`, 'success'))
+
+    title.reset()
+    author.reset()
+    url.reset()
   }
 
-  const handleTitleChange = (event) =>
-    setTitle(event.target.value)
-
-  const handleAuthorChange = (event) =>
-    setAuthor(event.target.value)
-
-  const handleUrlChange = (event) =>
-    setUrl(event.target.value)
 
   return (
     <>
@@ -37,39 +38,27 @@ const BlogForm = ({ createBlog }) => {
         <div>
           <label>
             Title
-            <input
-              value={title}
-              onChange={handleTitleChange}
-            />
+            <input {...title.input} />
           </label>
         </div>
 
         <div>
           <label>
             Author
-            <input
-              value={author}
-              onChange={handleAuthorChange}
-            />
+            <input {...author.input} />
           </label>
         </div>
 
         <div>
           <label>
             Url
-            <input
-              type="url"
-              value={url}
-              onChange={handleUrlChange}
-            />
+            <input {...url.input} />
           </label>
         </div>
 
         <button type='submit'>Create</button>
-
       </form>
     </>
-
   )
 }
 

@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
+import { useDispatch, useSelector } from 'react-redux'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { sendNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ blog, user, handleDelete, handleLike }) => {
+const Blog = ({ blog }) => {
   const [showDetails, setShowDetails] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
 
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
 
   const blogStyle = {
     paddingTop: 10,
@@ -19,15 +22,17 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
     setShowDetails(!showDetails)
 
 
-  const likeBlog = async () => {
-    handleLike(blog.id)
-    setLikes(likes + 1)
+  const handleLike = () => {
+    dispatch(likeBlog(blog.id))
+    dispatch(sendNotification(`Blog ${blog.title} liked`))
   }
 
 
-  const deleteBlog = async () => {
-    if (window.confirm(`Delete blog ${blog.title} by ${blog.author}?`))
-      await handleDelete(blog.id)
+  const handleDelete = () => {
+    if (window.confirm(`Delete blog ${blog.title} by ${blog.author}?`)) {
+      dispatch(removeBlog(blog.id))
+      dispatch(sendNotification('Blog deleted', 'success'))
+    }
   }
 
 
@@ -37,12 +42,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
 
   return (
     <div className='blog' style={blogStyle}>
-      <span className='blog-title'>
-        {blog.title}
-      </span>
-      <span className='blog-author'>
-        {blog.author}
-      </span>
+      {blog.title} {blog.author}
       <button onClick={handleShowDetailsChange}>
         {showDetails
           ? 'Hide'
@@ -52,15 +52,15 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
         <>
           <div>{blog.url}</div>
           <div>
-            likes {likes}
-            <button onClick={likeBlog}>
+            likes {blog.likes}
+            <button onClick={handleLike}>
               Like
             </button>
           </div>
           <div>{blog.user.name}</div>
 
           {showDelete && (
-            <button onClick={deleteBlog}>
+            <button onClick={handleDelete}>
               Remove
             </button>
           )}
