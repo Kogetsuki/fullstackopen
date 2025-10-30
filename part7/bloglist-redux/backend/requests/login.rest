@@ -1,0 +1,11 @@
+@localUrl = http://localhost:3001/api/login
+
+
+### Login to retrieve jwt token
+POST {{localUrl}}
+Content-Type: application/json
+
+{
+  "username": "Kogetsuki",
+  "password": "roze"
+}

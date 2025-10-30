@@ -1,0 +1,16 @@
+@localUrl = http://localhost:3001/api/users
+
+
+### Get all blogs
+GET {{localUrl}}
+
+
+### Post new blog
+POST {{localUrl}}
+Content-Type: application/json
+
+{
+  "username": "Kogetsuki",
+  "name": "Bastien Rozen",
+  "password": "roze"
+}
