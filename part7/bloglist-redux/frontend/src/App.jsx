@@ -10,6 +10,7 @@ import User from './views/User'
 
 import LoginForm from './components/LoginForm'
 import LoggedUserInfo from './components/LoggedUserInfo'
+import Notification from './components/Notification'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
