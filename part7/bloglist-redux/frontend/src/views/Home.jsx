@@ -10,7 +10,7 @@ const Home = () => {
 
   return (
     <>
-      <Togglable buttonLabel='New blog' ref={blogFormRef}>
+      <Togglable buttonLabel='Create new' ref={blogFormRef}>
         <BlogForm />
       </Togglable>
 

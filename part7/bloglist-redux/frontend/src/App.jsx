@@ -7,15 +7,16 @@ import blogService from './services/blogs'
 import Home from './views/Home'
 import Users from './views/Users'
 import User from './views/User'
+import Blog from './views/Blog'
 
 import LoginForm from './components/LoginForm'
 import LoggedUserInfo from './components/LoggedUserInfo'
 import Notification from './components/Notification'
+import Menu from './components/Menu'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { setLoggedUser } from './reducers/loggedUserReducer'
-
 
 
 const App = () => {
@@ -45,14 +46,19 @@ const App = () => {
 
   return (
     <>
-      <h2>Blogs</h2>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <Menu />
+        <LoggedUserInfo />
+      </div >
+
+      <h2>Blog app</h2>
       <Notification />
-      <LoggedUserInfo />
 
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/users' element={<Users />} />
         <Route path='/users/:id' element={<User />} />
+        <Route path='/blogs/:id' element={<Blog />} />
       </Routes>
     </>
   )

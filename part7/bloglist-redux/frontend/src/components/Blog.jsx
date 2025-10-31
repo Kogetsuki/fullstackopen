@@ -1,11 +1,8 @@
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { likeBlog, removeBlog } from '../reducers/blogReducer'
-import { sendNotification } from '../reducers/notificationReducer'
+import { Link } from 'react-router-dom'
+
 
 const Blog = ({ blog }) => {
-  const [showDetails, setShowDetails] = useState(false)
-
   const dispatch = useDispatch()
   const loggedUser = useSelector(state => state.loggedUser)
 
@@ -18,54 +15,9 @@ const Blog = ({ blog }) => {
   }
 
 
-  const handleShowDetailsChange = () =>
-    setShowDetails(!showDetails)
-
-
-  const handleLike = () => {
-    dispatch(likeBlog(blog.id))
-    dispatch(sendNotification(`Blog ${blog.title} liked`))
-  }
-
-
-  const handleDelete = () => {
-    if (window.confirm(`Delete blog ${blog.title} by ${blog.author}?`)) {
-      dispatch(removeBlog(blog.id))
-      dispatch(sendNotification('Blog deleted', 'success'))
-    }
-  }
-
-
-  const showDelete =
-    blog.user.id === loggedUser.id
-
-
   return (
     <div className='blog' style={blogStyle}>
-      {blog.title} {blog.author}
-      <button onClick={handleShowDetailsChange}>
-        {showDetails
-          ? 'Hide'
-          : 'View'}
-      </button>
-      {showDetails && (
-        <>
-          <div>{blog.url}</div>
-          <div>
-            likes {blog.likes}
-            <button onClick={handleLike}>
-              Like
-            </button>
-          </div>
-          <div>{blog.user.name}</div>
-
-          {showDelete && (
-            <button onClick={handleDelete}>
-              Remove
-            </button>
-          )}
-        </>
-      )}
+      <Link to={`/blogs/${blog.id}`}> {blog.title} {blog.author}</Link>
     </div>
   )
 }

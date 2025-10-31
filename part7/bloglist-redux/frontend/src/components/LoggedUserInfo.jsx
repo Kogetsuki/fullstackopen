@@ -16,7 +16,7 @@ const LoggedUserInfo = () => {
   return (
     <>
       <div>
-  {loggedUser.name} logged in
+        {loggedUser.name} logged in
       </div>
       <button onClick={Logout}>
         Logout
