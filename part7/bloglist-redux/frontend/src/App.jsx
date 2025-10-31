@@ -1,27 +1,29 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Routes, Route, Link } from 'react-router-dom'
 
 import blogService from './services/blogs'
 
-import BlogDisplay from './components/BlogDisplay'
+import Home from './views/Home'
+import Users from './views/Users'
+
 import LoginForm from './components/LoginForm'
-import Notification from './components/Notification'
 import UserInfo from './components/UserInfo'
-import BlogForm from './components/BlogForm'
-import Togglable from './components/Togglable'
 
 import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import { setUser } from './reducers/userReducer'
 
 
+
 const App = () => {
-  const blogFormRef = useRef()
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
 
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
 
@@ -36,25 +38,18 @@ const App = () => {
   }, [])
 
 
+  if (!user)
+    return <LoginForm />
+
   return (
     <>
-      <Notification />
+      <h2>Blogs</h2>
+      <UserInfo />
 
-      {!user && <LoginForm />}
-
-      {user &&
-        <>
-          <h2>Blogs</h2>
-
-          <UserInfo />
-
-          <Togglable buttonLabel='New blog' ref={blogFormRef}>
-            <BlogForm />
-          </Togglable>
-
-          <BlogDisplay />
-        </>
-      }
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/users' element={<Users />} />
+      </Routes>
     </>
   )
 }

@@ -4,6 +4,8 @@ import { useField } from '../hooks'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
+import Notification from './Notification'
+
 import { setUser } from '../reducers/userReducer'
 import { sendNotification } from '../reducers/notificationReducer'
 
@@ -47,6 +49,8 @@ const LoginForm = () => {
   return (
     <>
       <h2>Log in to application</h2>
+
+      <Notification />
 
       <form onSubmit={onSubmit}>
         <div>

@@ -15,7 +15,9 @@ const UserInfo = () => {
 
   return (
     <>
-      {user.name} logged in
+      <div>
+        {user.name} logged in
+      </div>
       <button onClick={Logout}>
         Logout
       </button>
