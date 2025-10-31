@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { clearUser } from '../reducers/userReducer'
+import { clearLoggedUser } from '../reducers/loggedUserReducer'
 import { sendNotification } from '../reducers/notificationReducer'
 
-const UserInfo = () => {
-  const user = useSelector(state => state.user)
+const LoggedUserInfo = () => {
+  const loggedUser = useSelector(state => state.loggedUser)
   const dispatch = useDispatch()
 
   const Logout = () => {
     window.localStorage.removeItem('loggedUser')
-    dispatch(clearUser())
+    dispatch(clearLoggedUser())
     dispatch(sendNotification('Logged out', 'success'))
   }
 
@@ -16,7 +16,7 @@ const UserInfo = () => {
   return (
     <>
       <div>
-        {user.name} logged in
+  {loggedUser.name} logged in
       </div>
       <button onClick={Logout}>
         Logout
@@ -25,4 +25,4 @@ const UserInfo = () => {
   )
 }
 
-export default UserInfo
+export default LoggedUserInfo

@@ -6,19 +6,20 @@ import blogService from './services/blogs'
 
 import Home from './views/Home'
 import Users from './views/Users'
+import User from './views/User'
 
 import LoginForm from './components/LoginForm'
-import UserInfo from './components/UserInfo'
+import LoggedUserInfo from './components/LoggedUserInfo'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
-import { setUser } from './reducers/userReducer'
+import { setLoggedUser } from './reducers/loggedUserReducer'
 
 
 
 const App = () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const loggedUser = useSelector(state => state.loggedUser)
 
 
   useEffect(() => {
@@ -32,23 +33,25 @@ const App = () => {
 
     if (loggedUser) {
       const user = JSON.parse(loggedUser)
-      dispatch(setUser(user))
+      dispatch(setLoggedUser(user))
       blogService.setToken(user.token)
     }
   }, [])
 
 
-  if (!user)
+  if (!loggedUser)
     return <LoginForm />
 
   return (
     <>
       <h2>Blogs</h2>
-      <UserInfo />
+      <Notification />
+      <LoggedUserInfo />
 
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/users' element={<Users />} />
+        <Route path='/users/:id' element={<User />} />
       </Routes>
     </>
   )

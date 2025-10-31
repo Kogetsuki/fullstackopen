@@ -6,7 +6,7 @@ import blogService from '../services/blogs'
 
 import Notification from './Notification'
 
-import { setUser } from '../reducers/userReducer'
+import { setLoggedUser } from '../reducers/loggedUserReducer'
 import { sendNotification } from '../reducers/notificationReducer'
 
 
@@ -35,7 +35,7 @@ const LoginForm = () => {
       }
       const user = await loginService.login(credentials)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      dispatch(setUser(user))
+      dispatch(setLoggedUser(user))
 
       blogService.setToken(user.token)
       dispatch(sendNotification(`Welcome ${user.name}`, 'success'))

@@ -7,7 +7,7 @@ const Blog = ({ blog }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const loggedUser = useSelector(state => state.loggedUser)
 
   const blogStyle = {
     paddingTop: 10,
@@ -37,7 +37,7 @@ const Blog = ({ blog }) => {
 
 
   const showDelete =
-    blog.user.id === user.id
+    blog.user.id === loggedUser.id
 
 
   return (
