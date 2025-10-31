@@ -2,11 +2,9 @@ import { useState, useEffect, useRef, useContext } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 import blogService from './services/blogs'
-import loginService from './services/login'
 
 import { getBlogs } from './requests'
 
-import NotificationContext from './contexts/NotificationContext'
 import UserContext from './contexts/UserContext'
 
 import BlogDisplay from './components/BlogDisplay'
