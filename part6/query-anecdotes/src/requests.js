@@ -41,5 +41,4 @@ export const updateAnecdote = async (updatedAnecdote) => {
     throw new Error('Failed to update anecdote')
 
   return await res.json()
-
 }
