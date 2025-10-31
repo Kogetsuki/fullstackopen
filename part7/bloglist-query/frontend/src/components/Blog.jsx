@@ -1,10 +1,13 @@
 import { useContext, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+
 import { updateBlog, removeBlog } from '../requests'
+
 import NotificationContext from '../contexts/NotificationContext'
+import UserContext from '../contexts/UserContext'
 
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -18,6 +21,7 @@ const Blog = ({ blog, user }) => {
 
   const queryClient = useQueryClient()
   const { sendNotification } = useContext(NotificationContext)
+  const { user } = useContext(UserContext)
 
 
   const handleShowDetailsChange = () =>

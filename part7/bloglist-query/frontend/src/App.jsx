@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
+
 import { getBlogs } from './requests'
 
 import NotificationContext from './contexts/NotificationContext'
+import UserContext from './contexts/UserContext'
 
 import BlogDisplay from './components/BlogDisplay'
 import LoginForm from './components/LoginForm'
@@ -17,9 +19,8 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const blogFormRef = useRef()
-  const [user, setUser] = useState(null)
 
-  const { sendNotification } = useContext(NotificationContext)
+  const { user, setUser } = useContext(UserContext)
 
 
   useEffect(() => {
@@ -41,30 +42,6 @@ const App = () => {
   const blogs = result.data
 
 
-  const handleLogin = async ({ username, password }) => {
-    try {
-      const user = await loginService.login({ username, password })
-
-      window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      setUser(user)
-      blogService.setToken(user.token)
-
-      sendNotification(`${user.name} logged in`, 'success')
-    }
-    catch {
-      sendNotification('Wrong username or password', 'error')
-    }
-  }
-
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedUser')
-    setUser(null)
-
-    sendNotification('Logged out', 'success')
-  }
-
-
   return (
     <>
       <Notification />
@@ -80,15 +57,12 @@ const App = () => {
 
       {!result.isLoading && !result.isError && (
         <>
-          {!user && <LoginForm handleLogin={handleLogin} />}
+          {!user && <LoginForm />}
 
           {user &&
             <>
               <h2>Blogs</h2>
-              <UserInfo
-                user={user}
-                handleLogout={handleLogout}
-              />
+              <UserInfo />
 
               <Togglable buttonLabel='New blog' ref={blogFormRef}>
                 <BlogForm />
@@ -96,7 +70,6 @@ const App = () => {
 
               <BlogDisplay
                 blogs={blogs}
-                user={user}
               />
             </>
           }
