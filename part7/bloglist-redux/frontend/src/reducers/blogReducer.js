@@ -47,6 +47,14 @@ export const appendBlog = (content) => {
 }
 
 
+export const commentBlog = (id, comment) => {
+  return async (dispatch, getState) => {
+    const updatedBlog = await blogService.createComment(id, comment)
+    dispatch(updateBlog(updatedBlog))
+  }
+}
+
+
 export const likeBlog = (id) => {
   return async (dispatch, getState) => {
     const blogToChange = getState().blogs.find(b => b.id === id)

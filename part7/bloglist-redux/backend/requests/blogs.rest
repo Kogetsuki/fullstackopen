@@ -1,6 +1,6 @@
-@localUrl = http://localhost:3003/api/blogs
+@localUrl = http://localhost:3001/api/blogs
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2OGY1NmNjNTFiM2QyMmIwZWJhY2JhYzciLCJpYXQiOjE3NjA5NTUwMzMsImV4cCI6MTc2MDk1ODYzM30.WsETzvm9NDMv4kk66yWESNaL-156VoQEKYnbwtebhGQ
-@blogId = 68f5f4395f2414f86be96cf6
+@blogId = 68f60ac1927ac586ab578da0
 
 
 ### Get all blogs
@@ -8,15 +8,12 @@ GET {{localUrl}}
 
 
 ### Post new blog
-POST {{localUrl}}
+POST {{localUrl}}/{{blogId}}/comments
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "title": "Auth blog",
-  "author": "New one",
-  "url": "https://example2.com",
-  "likes": 1045
+  "comment": "This is an awesome post!"
 }
 
 

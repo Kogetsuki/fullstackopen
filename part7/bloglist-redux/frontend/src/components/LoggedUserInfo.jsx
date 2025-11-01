@@ -6,7 +6,7 @@ const LoggedUserInfo = () => {
   const loggedUser = useSelector(state => state.loggedUser)
   const dispatch = useDispatch()
 
-  const Logout = () => {
+  const logout = () => {
     window.localStorage.removeItem('loggedUser')
     dispatch(clearLoggedUser())
     dispatch(sendNotification('Logged out', 'success'))
@@ -18,7 +18,7 @@ const LoggedUserInfo = () => {
       <div>
         {loggedUser.name} logged in
       </div>
-      <button onClick={Logout}>
+      <button onClick={logout}>
         Logout
       </button>
     </>

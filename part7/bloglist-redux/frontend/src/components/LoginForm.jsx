@@ -20,19 +20,20 @@ const LoginForm = () => {
   const onSubmit = async (event) => {
     event.preventDefault()
 
-    await Login()
+    await login()
 
     username.reset()
     password.reset()
   }
 
 
-  const Login = async () => {
+  const login = async () => {
     try {
       const credentials = {
         username: username.value,
         password: password.value
       }
+
       const user = await loginService.login(credentials)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       dispatch(setLoggedUser(user))

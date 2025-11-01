@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { sendNotification } from '../reducers/notificationReducer'
+import CommentForm from '../components/CommentForm'
 
 
 const Blog = () => {
@@ -56,6 +57,18 @@ const Blog = () => {
           Remove
         </button>
       )}
+
+      <h3>Comments</h3>
+
+      <CommentForm />
+
+      <ul>
+        {blog.comments.map(comment =>
+          <li key={comment}>
+            {comment}
+          </li>
+        )}
+      </ul>
     </>
   )
 }
