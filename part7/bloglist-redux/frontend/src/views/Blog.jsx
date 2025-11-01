@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { sendNotification } from '../reducers/notificationReducer'
@@ -38,7 +38,7 @@ const Blog = () => {
     <>
       <h2>{blog.title} {blog.author}</h2>
 
-      {blog.url}
+      <a href={blog.url}>{blog.url}</a>
 
       <div>
         {blog.likes} likes
