@@ -8,6 +8,7 @@ import Notification from './Notification'
 
 import { setLoggedUser } from '../reducers/loggedUserReducer'
 import { sendNotification } from '../reducers/notificationReducer'
+import { Form, Input, Label, Button, Title } from '../styles/Styles'
 
 
 const LoginForm = () => {
@@ -49,27 +50,23 @@ const LoginForm = () => {
 
   return (
     <>
-      <h2>Log in to application</h2>
+      <Title>Log in to application</Title>
 
       <Notification />
 
-      <form onSubmit={onSubmit}>
-        <div>
-          <label>
-            Username
-            <input {...username.input} />
-          </label>
-        </div>
+      <Form onSubmit={onSubmit}>
+        <Label>
+          Username
+          <Input {...username.input} />
+        </Label>
 
-        <div>
-          <label>
-            Password
-            <input {...password.input} />
-          </label>
-        </div>
+        <Label>
+          Password
+          <Input {...password.input} />
+        </Label>
 
-        <button type="submit">Login</button>
-      </form>
+        <Button type="submit" primary=''>Login</Button>
+      </Form>
     </>
   )
 }

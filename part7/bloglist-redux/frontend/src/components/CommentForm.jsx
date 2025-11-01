@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom'
 import { commentBlog } from '../reducers/blogReducer'
 import { sendNotification } from '../reducers/notificationReducer'
 
+import { Button, Form, Input } from '../styles/Styles'
+
 
 const CommentForm = () => {
   const dispatch = useDispatch()
@@ -24,12 +26,12 @@ const CommentForm = () => {
 
   return (
     <>
-      <form onSubmit={addComment}>
-        <div>
-          <input {...content.input} />
-          <button type='submit'>Add comment</button>
-        </div>
-      </form>
+      <Form onSubmit={addComment}>
+        <span>
+          <Input {...content.input} />
+          <Button type='submit'>Add comment</Button>
+        </span>
+      </Form>
     </>
   )
 }

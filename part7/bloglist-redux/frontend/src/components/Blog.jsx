@@ -1,24 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import { BlogCard, BlogTitle } from '../styles/Styles'
 
 const Blog = ({ blog }) => {
-  const dispatch = useDispatch()
-  const loggedUser = useSelector(state => state.loggedUser)
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
 
   return (
-    <div className='blog' style={blogStyle}>
-      <Link to={`/blogs/${blog.id}`}> {blog.title} {blog.author}</Link>
-    </div>
+    <BlogCard className='blog'>
+      <BlogTitle>
+        <Link to={`/blogs/${blog.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          {blog.title} by {blog.author}
+        </Link>
+      </BlogTitle>
+    </BlogCard>
   )
 }
 

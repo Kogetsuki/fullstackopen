@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { appendBlog } from '../reducers/blogReducer'
 import { sendNotification } from '../reducers/notificationReducer'
 import { useField } from '../hooks'
+import { Form, Input, Label, Button, Subtitle } from '../styles/Styles'
 
 
 const BlogForm = () => {
@@ -32,32 +33,26 @@ const BlogForm = () => {
 
   return (
     <>
-      <h2>Create new</h2>
+      <Subtitle>Create new</Subtitle>
 
-      <form onSubmit={addBlog}>
-        <div>
-          <label>
-            Title
-            <input {...title.input} />
-          </label>
-        </div>
+      <Form onSubmit={addBlog}>
+        <Label>
+          Title
+          <Input {...title.input} />
+        </Label>
 
-        <div>
-          <label>
-            Author
-            <input {...author.input} />
-          </label>
-        </div>
+        <Label>
+          Author
+          <Input {...author.input} />
+        </Label>
 
-        <div>
-          <label>
-            Url
-            <input {...url.input} />
-          </label>
-        </div>
+        <Label>
+          Url
+          <Input {...url.input} />
+        </Label>
 
-        <button type='submit'>Create</button>
-      </form>
+        <Button type='submit' primary=''>Create</Button>
+      </Form>
     </>
   )
 }

@@ -3,7 +3,9 @@ import { Link, useParams } from 'react-router-dom'
 
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { sendNotification } from '../reducers/notificationReducer'
+
 import CommentForm from '../components/CommentForm'
+import { BlogInfo, BlogTitle, Button, CommentItem, CommentList, CommentSection } from '../styles/Styles'
 
 
 const Blog = () => {
@@ -37,38 +39,44 @@ const Blog = () => {
 
   return (
     <>
-      <h2>{blog.title} {blog.author}</h2>
+      <BlogInfo>
+        <BlogTitle>
+          {blog.title} {blog.author}
+        </BlogTitle>
 
-      <a href={blog.url}>{blog.url}</a>
+        <a href={blog.url}>{blog.url}</a>
 
-      <div>
-        {blog.likes} likes
-        <button onClick={handleLike}>
-          Like
-        </button>
-      </div>
+        <div>
+          {blog.likes} likes
+          <Button onClick={handleLike}>
+            Like
+          </Button>
+        </div>
 
-      <div>
-        added by {blog.user.name}
-      </div>
+        <div>
+          added by {blog.user.name}
+        </div>
+      </BlogInfo>
 
       {showDelete && (
-        <button onClick={handleDelete}>
+        <Button onClick={handleDelete}>
           Remove
-        </button>
+        </Button>
       )}
 
-      <h3>Comments</h3>
+      <CommentSection>
+        <h3>Comments</h3>
 
-      <CommentForm />
+        <CommentForm />
 
-      <ul>
-        {blog.comments.map(comment =>
-          <li key={comment}>
-            {comment}
-          </li>
-        )}
-      </ul>
+        <CommentList>
+          {blog.comments.map(comment =>
+            <CommentItem key={comment}>
+              {comment}
+            </CommentItem>
+          )}
+        </CommentList>
+      </CommentSection>
     </>
   )
 }

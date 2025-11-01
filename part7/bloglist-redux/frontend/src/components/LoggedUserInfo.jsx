@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { clearLoggedUser } from '../reducers/loggedUserReducer'
 import { sendNotification } from '../reducers/notificationReducer'
 
+import { Button, Container } from '../styles/Styles'
+
 const LoggedUserInfo = () => {
   const loggedUser = useSelector(state => state.loggedUser)
   const dispatch = useDispatch()
@@ -15,12 +17,14 @@ const LoggedUserInfo = () => {
 
   return (
     <>
-      <div>
-        {loggedUser.name} logged in
-      </div>
-      <button onClick={logout}>
+      <Container>
+        <div>
+          {loggedUser.name} logged in
+        </div>
+      </Container>
+      <Button onClick={logout}>
         Logout
-      </button>
+      </Button>
     </>
   )
 }
