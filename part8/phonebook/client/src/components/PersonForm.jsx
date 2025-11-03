@@ -1,7 +1,8 @@
 import { useMutation } from '@apollo/client/react'
 
-import { useField } from '../hooks/index'
-import { CREATE_PERSON } from '../App'
+import { useField } from '../hooks'
+import { ALL_PERSONS, CREATE_PERSON } from '../queries'
+
 
 const PersonForm = () => {
   const name = useField('text')
@@ -9,7 +10,9 @@ const PersonForm = () => {
   const street = useField('text')
   const city = useField('text')
 
-  const [createPerson] = useMutation(CREATE_PERSON)
+  const [createPerson] = useMutation(CREATE_PERSON, {
+    refetchQueries: [{ query: ALL_PERSONS }]
+  })
 
   const submit = (event) => {
     event.preventDefault()

@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client/react'
 import { useState } from 'react'
 
 import Person from './Person'
-import { FIND_PERSON } from '../App'
+import { FIND_PERSON } from '../queries'
 
 
 const Persons = ({ persons }) => {
