@@ -4,17 +4,25 @@ import { useField } from '../hooks'
 import { ALL_PERSONS, CREATE_PERSON } from '../queries'
 
 
-const PersonForm = () => {
+const PersonForm = ({ setError }) => {
   const name = useField('text')
   const phone = useField('text')
   const street = useField('text')
   const city = useField('text')
 
   const [createPerson] = useMutation(CREATE_PERSON, {
-    refetchQueries: [{ query: ALL_PERSONS }]
+    refetchQueries: [{ query: ALL_PERSONS }],
+    onError: (error) => {
+      const message =
+        error.graphQLErrors?.map(e => e.message).join('\n') ||
+        error.message ||
+        'An unknown error occurred'
+      setError(message)
+    }
+
   })
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault()
 
     createPerson({
