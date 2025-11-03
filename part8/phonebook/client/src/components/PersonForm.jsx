@@ -1,5 +1,4 @@
 import { useMutation } from '@apollo/client/react'
-
 import { useField } from '../hooks'
 import { ALL_PERSONS, CREATE_PERSON } from '../queries'
 
@@ -22,7 +21,8 @@ const PersonForm = ({ setError }) => {
 
   })
 
-  const submit = async (event) => {
+
+  const submit = (event) => {
     event.preventDefault()
 
     createPerson({
