@@ -149,6 +149,7 @@ const resolvers = {
       const person = await Person.findOne({ name: args.name })
       person.phone = args.phone
 
+
       try {
         await person.save()
       }
