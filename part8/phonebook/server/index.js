@@ -2,15 +2,14 @@ const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { GraphQLError } = require('graphql')
 const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
+require('dotenv').config()
 
 const Person = require('./models/person')
 const User = require('./models/user')
 
 
-const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
-
-require('dotenv').config()
 
 const MONGODB_URI = process.env.MONGODB_URI
 
