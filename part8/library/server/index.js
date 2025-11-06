@@ -98,22 +98,48 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args) => {
+      let author
+
       try {
-        let author = await Author.findOne({ name: args.author })
+        author = await Author.findOne({ name: args.author })
+
         if (!author) {
           author = new Author({ name: args.author })
-          await author.save()
+
+          try {
+            await author.save()
+          }
+          catch (error) {
+            throw new GraphQLError('Saving author failed', {
+              extensions: {
+                code: 'BAD_USER_INPUT',
+                invalidArgs: args.author,
+                error
+              }
+            })
+          }
         }
 
         const book = new Book({ ...args, author: author })
-        await book.save()
 
-        return book
+        try {
+          await book.save()
+        }
+        catch (error) {
+          throw new GraphQLError('Saving book failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              error
+            }
+          })
+        }
+
+        return book.populate('author')
       }
       catch (error) {
-        throw new GraphQLError('Adding book failed', {
+        throw new GraphQLError('Unexpected error while adding book', {
           extensions: {
-            code: 'BAD_USER_INPUT',
+            code: 'INTERNAL_SERVER_ERROR',
             error
           }
         })
@@ -122,14 +148,24 @@ const resolvers = {
 
 
     editAuthor: async (root, args) => {
-      const author = await Author.findOne({ name: args.name })
-      if (!author)
-        return null
+      try {
+        const author = await Author.findOne({ name: args.name })
+        if (!author)
+          return null
 
-      author.born = args.setBornTo
-      await author.save()
+        author.born = args.setBornTo
+        await author.save()
 
-      return author
+        return author
+      }
+      catch (error) {
+        throw new GraphQLError('Failed to edit author', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            error
+          }
+        })
+      }
     }
   }
 }
