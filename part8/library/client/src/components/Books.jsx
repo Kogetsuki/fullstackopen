@@ -16,7 +16,8 @@ const Books = (props) => {
       selectedGenre === 'All'
         ? {}
         : { genre: selectedGenre },
-    skip: !props.show
+    skip: !props.show,
+    key: selectedGenre
   })
 
   if (!props.show)
