@@ -232,16 +232,23 @@ startStandaloneServer(server, {
       req
         ? req.headers.authorization
         : null
+    // make token verification resilient: don't throw on invalid token
+    if (auth && auth.toLowerCase().startsWith('bearer ')) {
+      try {
+        const decodedToken = jwt.verify(
+          auth.substring(7), process.env.JWT_SECRET)
 
-    if (auth && auth.startsWith('Bearer ')) {
-      const decodedToken = jwt.verify(
-        auth.substring(7), process.env.JWT_SECRET)
+        const currentUser = await User
+          .findById(decodedToken.id)
 
-      const currentUser = await User
-        .findById(decodedToken.id)
-
-      return { currentUser }
+        return { currentUser }
+      }
+      catch (e) {
+        return {}
+      }
     }
+
+    return {}
   }
 }).then(({ url }) => {
   console.log(`Server ready at ${url}`)
