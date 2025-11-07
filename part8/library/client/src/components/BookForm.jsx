@@ -1,10 +1,15 @@
 import { useState } from 'react'
 import { useMutation } from '@apollo/client/react'
+import { useDispatch } from 'react-redux'
+
 import { useField } from '../hooks'
 import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries'
+import { setPage } from '../reducers/uiReducer'
 
 
-const NewBook = (props) => {
+const BookForm = (props) => {
+  const dispatch = useDispatch()
+
   const title = useField('text')
   const author = useField('text')
   const published = useField('number')
@@ -37,6 +42,8 @@ const NewBook = (props) => {
     published.reset()
     genre.reset()
     setGenres([])
+
+    dispatch(setPage('books'))
   }
 
 
@@ -79,4 +86,4 @@ const NewBook = (props) => {
   )
 }
 
-export default NewBook
+export default BookForm

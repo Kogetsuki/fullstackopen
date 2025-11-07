@@ -10,8 +10,22 @@ const BirthyearForm = () => {
   const result = useQuery(ALL_AUTHORS)
 
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [{ query: ALL_AUTHORS }]
+    update: (cache, res) => {
+      const { allAuthors } = cache.readQuery({ query: ALL_AUTHORS })
+
+      cache.writeQuery({
+        query: ALL_AUTHORS,
+        data: {
+          allAuthors: allAuthors.map(a =>
+            a.name === res.data.editAuthor.name
+              ? { ...a, ...res.data.editAuthor }
+              : a
+          )
+        }
+      })
+    }
   })
+
 
   if (result.loading)
     return <div>loading...</div>
