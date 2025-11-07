@@ -9,22 +9,26 @@ const Books = (props) => {
   const dispatch = useDispatch()
   const selectedGenre = useSelector(state => state.genre)
 
-  const result = useQuery(ALL_BOOKS)
+  const allBooksResult = useQuery(ALL_BOOKS)
+
+  const filteredBooksResult = useQuery(ALL_BOOKS, {
+    variables:
+      selectedGenre === 'All'
+        ? {}
+        : { genre: selectedGenre },
+    skip: !props.show
+  })
 
   if (!props.show)
     return null
 
-  if (result.loading)
+  if (allBooksResult.loading || filteredBooksResult.loading)
     return <div>loading...</div>
 
-  const books = result.data.allBooks
+  const allBooks = allBooksResult.data.allBooks
+  const filteredBooks = filteredBooksResult.data.allBooks
 
-  const genreList = [...new Set(books.flatMap(b => b.genres))]
-
-  const filteredBooks =
-    selectedGenre === 'All'
-      ? books
-      : books.filter(b => b.genres.includes(selectedGenre))
+  const genreList = [...new Set(allBooks.flatMap(b => b.genres))]
 
 
   return (

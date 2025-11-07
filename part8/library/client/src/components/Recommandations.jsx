@@ -5,8 +5,12 @@ import { ALL_BOOKS, CURRENT_USER } from '../queries'
 
 
 const Recommandations = (props) => {
-  const bookResult = useQuery(ALL_BOOKS)
-  const genreResult = useQuery(CURRENT_USER)
+  const bookResult = useQuery(ALL_BOOKS, {
+    skip: !props.show
+  })
+  const genreResult = useQuery(CURRENT_USER, {
+    skip: !props.show
+  })
 
   if (!props.show)
     return null
