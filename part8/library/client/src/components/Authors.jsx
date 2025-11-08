@@ -11,7 +11,11 @@ const Authors = (props) => {
   if (result.loading)
     return <div>loading...</div>
 
-  const authors = result.data.allAuthors
+  if (result.error) {
+    return <div>Error loading authors: {result.error.message}</div>
+  }
+
+  const authors = result.data?.allAuthors ?? []
 
 
   return (

@@ -11,7 +11,8 @@ const BirthyearForm = () => {
 
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     update: (cache, res) => {
-      const { allAuthors } = cache.readQuery({ query: ALL_AUTHORS })
+      const cached = cache.readQuery({ query: ALL_AUTHORS })
+      const allAuthors = cached?.allAuthors ?? []
 
       cache.writeQuery({
         query: ALL_AUTHORS,
@@ -30,7 +31,11 @@ const BirthyearForm = () => {
   if (result.loading)
     return <div>loading...</div>
 
-  const authors = result.data.allAuthors
+  if (result.error) {
+    return <div>Error loading authors: {result.error.message}</div>
+  }
+
+  const authors = result.data?.allAuthors ?? []
 
 
   const submit = async (event) => {
