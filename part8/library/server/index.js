@@ -2,6 +2,8 @@ const { ApolloServer } = require('@apollo/server')
 const { expressMiddleware } = require('@as-integrations/express5')
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer')
 const { makeExecutableSchema } = require('@graphql-tools/schema')
+const { WebSocketServer } = require('ws')
+const { useServer } = require('graphql-ws/use/ws')
 
 const express = require('express')
 const cors = require('cors')
@@ -30,9 +32,29 @@ const start = async () => {
   const app = express()
   const httpServer = http.createServer(app)
 
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: '/'
+  })
+
+  const schema = makeExecutableSchema({ typeDefs, resolvers })
+  const serverCleanup = useServer({ schema }, wsServer)
+
   const server = new ApolloServer({
-    schema: makeExecutableSchema({ typeDefs, resolvers }),
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+    schema,
+    introspection: true,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose()
+            }
+          }
+        }
+      }
+    ]
   })
 
   await server.start()
@@ -49,13 +71,18 @@ const start = async () => {
             : null
 
         if (auth && auth.startsWith('Bearer ')) {
-          const decodedToken = jwt.verify(
-            auth.substring(7), process.env.JWT_SECRET)
+          try {
+            const decodedToken = jwt.verify(
+              auth.substring(7), process.env.JWT_SECRET)
 
-          const currentUser = await User
-            .findById(decodedToken.id)
+            const currentUser = await User
+              .findById(decodedToken.id)
 
-          return { currentUser }
+            return { currentUser }
+          }
+          catch (e) {
+            return {}
+          }
         }
       }
     })
