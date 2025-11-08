@@ -34,13 +34,23 @@ export const FIND_PERSON = gql`
 
 
 export const CREATE_PERSON = gql`
-  mutation createPerson($name: String!, $street: String!, $city: String!, $phone: String) {
-    addPerson(
-      name: $name,
-      street: $street,
-      city: $city,
-      phone: $phone
-    ) {
+mutation createPerson($name: String!, $street: String!, $city: String!, $phone: String) {
+  addPerson(
+    name: $name,
+    street: $street,
+    city: $city,
+    phone: $phone
+  ) {
+    ...PersonDetails
+  }
+}
+${PERSON_DETAILS}
+`
+
+
+export const PERSON_ADDED = gql`
+  subscription {
+    personAdded {
       ...PersonDetails
     }
   }

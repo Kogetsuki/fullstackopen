@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client/react'
 import { useField } from '../hooks'
 import { ALL_PERSONS, CREATE_PERSON } from '../queries'
+import { updateCache } from '../utils'
 
 
 const PersonForm = ({ setError }) => {
@@ -18,9 +19,7 @@ const PersonForm = ({ setError }) => {
       setError(message)
     },
     update: (cache, res) => {
-      cache.updateQuery({ query: ALL_PERSONS }, ({ allPersons }) => {
-        return { allPersons: allPersons.concat(res.data.addPerson) }
-      })
+      updateCache(cache, { query: ALL_PERSONS }, res.data.addPerson)
     }
   })
 

@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { useApolloClient, useQuery } from '@apollo/client/react'
+import { useApolloClient, useQuery, useSubscription } from '@apollo/client/react'
 
-import { ALL_PERSONS } from './queries'
+import { ALL_PERSONS, PERSON_ADDED } from './queries'
+import { updateCache } from './utils'
 
 import Notification from './components/Notification'
 import Persons from './components/Persons'
@@ -17,8 +18,14 @@ const App = () => {
 
   const result = useQuery(ALL_PERSONS)
 
-  if (result.loading)
-    return <div>loading...</div>
+
+  useSubscription(PERSON_ADDED, {
+    onData: ({ data, client }) => {
+      const addedPerson = data.data.personAdded
+      notify(`${addedPerson.name} added`)
+      updateCache(client.cache, { query: ALL_PERSONS }, addedPerson)
+    }
+  })
 
 
   const notify = (message) => {
@@ -34,6 +41,10 @@ const App = () => {
     localStorage.clear()
     client.resetStore()
   }
+
+
+  if (result.loading)
+    return <div>loading...</div>
 
 
   if (!token)
