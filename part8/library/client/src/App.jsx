@@ -1,14 +1,17 @@
-import { useApolloClient } from '@apollo/client/react'
+import { useApolloClient, useSubscription } from '@apollo/client/react'
 import { useSelector, useDispatch } from 'react-redux'
+
+import { logout } from './reducers/authReducer'
+import { setPage } from './reducers/uiReducer'
+
+import { ALL_BOOKS, BOOK_ADDED } from './queries'
+import { updateCache } from './utils'
 
 import Authors from './components/Authors'
 import Books from './components/Books'
 import BookForm from './components/BookForm'
 import LoginForm from './components/LoginForm'
 import Recommandations from './components/Recommandations'
-
-import { logout } from './reducers/authReducer'
-import { setPage } from './reducers/uiReducer'
 
 
 const App = () => {
@@ -17,6 +20,15 @@ const App = () => {
 
   const token = useSelector(state => state.auth.token)
   const page = useSelector(state => state.ui.page)
+
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data, client }) => {
+      const addedBook = data.data.bookAdded
+      alert(`${addedBook.title} added`)
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
+    }
+  })
 
 
   const handleLogout = () => {

@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { useMutation } from '@apollo/client/react'
 import { useDispatch } from 'react-redux'
 
-import { useField } from '../hooks'
 import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries'
+
+import { useField } from '../hooks'
 import { setPage } from '../reducers/uiReducer'
+import { updateCache } from '../utils'
 
 
 const BookForm = (props) => {
@@ -17,7 +19,10 @@ const BookForm = (props) => {
   const [genres, setGenres] = useState([])
 
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }]
+    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
+    update: (cache, res) => {
+      updateCache(cache, { query: ALL_BOOKS }, res.data.addBook)
+    },
   })
 
 
