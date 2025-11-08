@@ -24,9 +24,10 @@ const resolvers = {
       Person.collection.countDocuments(),
 
     allPersons: async (root, args) => {
+      console.log('Person.find')
       return (!args.phone)
-        ? Person.find({})
-        : Person.find({ phone: { $exists: args.phone === 'YES' } })
+        ? Person.find({}).populate('friendOf')
+        : Person.find({ phone: { $exists: args.phone === 'YES' } }).populate('friendOf')
     },
 
     findPerson: async (root, args) =>
