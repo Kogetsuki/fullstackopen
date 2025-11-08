@@ -60,6 +60,11 @@ const typeDefs = `
       name: String!
     ): User
   }
+
+
+  type Subscription {
+    personAdded: Person!
+  }
 `
 
 module.exports = typeDefs
