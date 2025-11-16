@@ -8,7 +8,6 @@ app.get('/ping', (_, res) =>
   res.send('pong'));
 
 app.post('/calculate', (req, res) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { value1, value2, op } = req.body;
 
   // Validate the data here

@@ -1,23 +1,7 @@
-interface BmiValues {
+export interface BmiValues {
   height: number;
   weight: number;
 }
-
-
-export const parseArguments = (args: string[]): BmiValues => {
-  if (args.length < 4)
-    throw new Error('Not enough arguments');
-  if (args.length > 4)
-    throw new Error('Too many arguments');
-
-  const height = Number(args[2]);
-  const weight = Number(args[3]);
-
-  if (isNaN(height) || isNaN(weight))
-    throw new Error('Provided values were not numbers');
-
-  return { height, weight };
-};
 
 
 export const calculateBmi = (height: number, weight: number): string => {
@@ -41,19 +25,3 @@ export const calculateBmi = (height: number, weight: number): string => {
       return 'Obese Class III';
   }
 };
-
-
-// Only run if called directly from CLI
-if (require.main === module)
-  try {
-    const { height, weight } = parseArguments(process.argv);
-    const bmi = calculateBmi(height, weight);
-    console.log(`Height: ${height}, Weight: ${weight}, BMI: ${bmi}`);
-  }
-  catch (error: unknown) {
-    let errorMessage = 'message';
-    if (error instanceof Error)
-      errorMessage += ` Error: ${error.message}`;
-
-    console.log(errorMessage);
-  }

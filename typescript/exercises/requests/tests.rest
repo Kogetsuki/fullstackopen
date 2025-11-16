@@ -1,0 +1,55 @@
+@baseUrl = http://localhost:3003
+// @no-formatter
+
+
+### Ping
+GET {{baseUrl}}/ping
+
+
+### BMI
+GET {{baseUrl}}/bmi?height=180&weight=72
+
+
+### Exercises - valid
+POST {{baseUrl}}/exercises
+Content-Type: application/json
+
+{
+  "dailyExercises": [
+    1,
+    0,
+    2,
+    0,
+    3,
+    0,
+    2.5
+  ],
+  "target": 2.5
+}
+
+
+### Exercises – parameters missing
+POST {{baseUrl}}/exercises
+Content-Type: application/json
+
+{
+  "dailyExercises": [
+    1,
+    2,
+    3
+  ]
+}
+
+
+### Exercises – malformatted parameters
+POST {{baseUrl}}/exercises
+Content-Type: application/json
+
+{
+  "dailyExercises": [
+    "x",
+    0,
+    2
+  ],
+  "target": "lol"
+}
