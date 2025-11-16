@@ -17,7 +17,6 @@ const parseArguments = (args: string[]): MultiplyValues => {
 
   else
     throw new Error('Provided values were not numbers');
-
 };
 
 const multiplier = (a: number, b: number, printText: string) => {
