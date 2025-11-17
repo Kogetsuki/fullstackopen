@@ -28,7 +28,6 @@ const addDiary = (entry: NewDiaryEntry): DiaryEntry => {
   };
 
   diaries.push(newDiaryEntry);
-
   return newDiaryEntry;
 };
 
