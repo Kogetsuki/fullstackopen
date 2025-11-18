@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { newEntrySchema } from './utils';
+import { NewEntrySchema } from './utils';
 
 export enum Weather {
   Sunny = 'sunny',
@@ -16,7 +16,7 @@ export enum Visibility {
   Poor = 'poor',
 }
 
-export type NewDiaryEntry = z.infer<typeof newEntrySchema>;
+export type NewDiaryEntry = z.infer<typeof NewEntrySchema>;
 export interface DiaryEntry extends NewDiaryEntry {
   id: number;
 }

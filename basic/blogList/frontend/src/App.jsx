@@ -138,5 +138,4 @@ const App = () => {
     </>
   )
 }
-// TODO: when liking a blog and it exceeds the one above in likes number, swap them
 export default App
