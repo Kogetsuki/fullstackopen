@@ -1,3 +1,16 @@
 @baseUrl = http://localhost:3001/api
 
 GET {{baseUrl}}/ping
+
+
+### Add patient
+POST {{baseUrl}}/patients
+Content-Type: application/json
+
+{
+  "name": "Bastien Rozen",
+  "dateOfBirth": "1998-03-16",
+  "ssn": "090786-1111",
+  "gender": "male",
+  "occupation": "Physicist"
+}
