@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 
-import { newDiaryParser, errorMiddleware } from '../middleware';
 import diaryService from '../services/diaryService';
+import { newDiaryParser, errorMiddleware } from '../middleware';
 import { DiaryEntry, NewDiaryEntry } from '../types';
 
 
