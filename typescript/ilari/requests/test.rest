@@ -1,0 +1,17 @@
+@baseUrl = http://localhost:3000/api
+
+
+### Get all diaries
+GET {{baseUrl}}/diaries
+
+
+### Add new diary
+POST {{baseUrl}}/diaries
+Content-Type: application/json
+
+{
+  "date": "2025-07-25",
+  "weather": "cloudy",
+  "visibility": "good",
+  "comment": "test"
+}

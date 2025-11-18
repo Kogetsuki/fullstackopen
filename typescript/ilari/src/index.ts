@@ -8,7 +8,7 @@ app.use(express.json());
 
 
 app.get('/ping', (_req, res) => {
-  console.log('Someone pinged here');
+  console.log('someone pinged here');
   res.send('pong');
 });
 
