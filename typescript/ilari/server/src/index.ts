@@ -1,10 +1,13 @@
 import express from 'express';
+import cors from 'cors';
 import diaryRouter from './routes/diaries';
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+app.use(cors());
 
 
 app.get('/ping', (_req, res) => {
