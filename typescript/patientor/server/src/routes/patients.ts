@@ -11,6 +11,10 @@ router.get('/', (_req, res: Response<NonSensitivePatient[]>) =>
   res.send(patientService.getAll()));
 
 
+router.get('/:id', (req: Request<{ id: string; }>, res: Response<Patient>) =>
+  res.send(patientService.findById(req.params.id)));
+
+
 router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<Patient>) => {
   const addedPatient = patientService.addPatient(req.body);
   res.json(addedPatient);
