@@ -5,6 +5,7 @@ import { Patient } from "../../types";
 import patientService from "../../services/patients";
 
 import GenderIcon from "./GenderIcon";
+import Entries from "./Entries";
 
 
 const PatientPage = () => {
@@ -19,6 +20,7 @@ const PatientPage = () => {
     const fetchPatient = async () => {
       const fullPatient = await patientService.getPatient(id);
       setPatient(fullPatient);
+      console.log(`FULLPATIENT FROM SERVER ${fullPatient.entries[0]}`);
     };
 
     void fetchPatient();
@@ -39,6 +41,8 @@ const PatientPage = () => {
       <div>DOB: {patient.dateOfBirth}</div>
       <div>SSN: {patient.ssn}</div>
       <div>Occupation: {patient.occupation}</div>
+
+      <Entries patient={patient} />
     </>
   );
 };
