@@ -1,18 +1,16 @@
-import type { Diagnosis, OccupationalHealthcareEntry } from "../../../types";
 import { Card, CardContent, Typography, List, ListItem } from "@mui/material";
 import WorkIcon from '@mui/icons-material/Work';
+
+import type { OccupationalHealthcareEntry } from "../../../types";
+import { getDiagnosis } from "../../../selectors/diagnoseSelectors";
 
 
 interface Props {
   entry: OccupationalHealthcareEntry;
-  diagnoses: Diagnosis[];
 }
 
 
-const OccupationalHealthcareEntry = ({ entry, diagnoses }: Props) => {
-  const getDiagnosis = (code: string): Diagnosis | undefined =>
-    diagnoses.find(d => d.code === code);
-
+const OccupationalHealthcareEntry = ({ entry }: Props) => {
 
   return (
     <Card variant='outlined' sx={{ mb: 2 }}>

@@ -1,17 +1,15 @@
-import type { Diagnosis, HospitalEntry } from "../../../types";
+import type { HospitalEntry } from "../../../types";
 import { Card, CardContent, Typography, List, ListItem } from "@mui/material";
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import { getDiagnosis } from "../../../selectors/diagnoseSelectors";
 
 
 interface Props {
   entry: HospitalEntry;
-  diagnoses: Diagnosis[];
 }
 
 
-const HospitalEntry = ({ entry, diagnoses }: Props) => {
-  const getDiagnosis = (code: string): Diagnosis | undefined =>
-    diagnoses.find(d => d.code === code);
+const HospitalEntry = ({ entry }: Props) => {
 
   return (
     <Card variant='outlined' sx={{ mb: 2 }}>

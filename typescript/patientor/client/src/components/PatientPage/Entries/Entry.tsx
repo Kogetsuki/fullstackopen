@@ -1,4 +1,4 @@
-import type { Diagnosis, Entry } from "../../../types";
+import type { Entry } from "../../../types";
 import HealthCheckEntry from "./HealthCheckEntry";
 import HospitalEntry from "./HospitalEntry";
 import OccupationalHealthcareEntry from "./OccupationalHealthcareEntry";
@@ -6,10 +6,9 @@ import OccupationalHealthcareEntry from "./OccupationalHealthcareEntry";
 
 interface Props {
   entry: Entry;
-  diagnoses: Diagnosis[];
 }
 
-const Entry = ({ entry, diagnoses }: Props) => {
+const Entry = ({ entry }: Props) => {
   const assertNever = (value: never): never => {
     throw new Error(`Unhandled entry type ${JSON.stringify(value)}`);
   };
@@ -17,13 +16,13 @@ const Entry = ({ entry, diagnoses }: Props) => {
 
   switch (entry.type) {
     case 'Hospital':
-      return <HospitalEntry entry={entry} diagnoses={diagnoses} />;
+      return <HospitalEntry entry={entry} />;
 
     case 'HealthCheck':
-      return <HealthCheckEntry entry={entry} diagnoses={diagnoses} />;
+      return <HealthCheckEntry entry={entry} />;
 
     case 'OccupationalHealthcare':
-      return <OccupationalHealthcareEntry entry={entry} diagnoses={diagnoses} />;
+      return <OccupationalHealthcareEntry entry={entry} />;
 
     default:
       return assertNever(entry);

@@ -1,18 +1,16 @@
-import type { Diagnosis, HealthCheckEntry } from "../../../types";
+import type { HealthCheckEntry } from "../../../types";
 import { Card, CardContent, Typography, List, ListItem } from "@mui/material";
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { getDiagnosis } from "../../../selectors/diagnoseSelectors";
 
 
 interface Props {
   entry: HealthCheckEntry;
-  diagnoses: Diagnosis[];
 }
 
 
-const HealthCheckEntry = ({ entry, diagnoses }: Props) => {
-  const getDiagnosis = (code: string): Diagnosis | undefined =>
-    diagnoses.find(d => d.code === code);
+const HealthCheckEntry = ({ entry }: Props) => {
 
 
   const ratingColor = (): string => {

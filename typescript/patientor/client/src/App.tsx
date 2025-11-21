@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import { Button, Divider, Container, Typography } from '@mui/material';
 
 import { apiBaseUrl } from "./constants";
 import { Patient } from "./types";
+import type { AppDispatch } from "./store";
 
 import patientService from "./services/patients";
+import { fetchDiagnoses } from "./reducers/diagnoseReducer";
 
 import PatientListPage from "./components/PatientListPage";
 import PatientPage from "./components/PatientPage/PatientPage";
@@ -14,6 +17,7 @@ import PatientPage from "./components/PatientPage/PatientPage";
 
 const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
 
 
   useEffect(() => {
@@ -25,7 +29,8 @@ const App = () => {
     };
 
     void fetchPatientList();
-  }, []);
+    dispatch(fetchDiagnoses());
+  }, [dispatch]);
 
 
   return (
