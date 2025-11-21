@@ -2,10 +2,11 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import { Patient } from "../../types";
+
 import patientService from "../../services/patients";
 
 import GenderIcon from "./GenderIcon";
-import Entries from "./Entries";
+import Entries from "./Entries/Entries";
 
 
 const PatientPage = () => {
@@ -20,7 +21,6 @@ const PatientPage = () => {
     const fetchPatient = async () => {
       const fullPatient = await patientService.getPatient(id);
       setPatient(fullPatient);
-      console.log(`FULLPATIENT FROM SERVER ${fullPatient.entries[0]}`);
     };
 
     void fetchPatient();
