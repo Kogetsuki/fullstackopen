@@ -17,7 +17,7 @@ export interface Patient {
   occupation: string;
   gender: Gender;
   dateOfBirth: string;
-  entries: Entry[];
+  entries: NewEntry[];
 }
 
 
@@ -82,4 +82,4 @@ export type Entry =
   | HealthCheckEntry;
 
 export type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
-export type EntryWithoutId = UnionOmit<Entry, 'id'>;
+export type NewEntry = UnionOmit<Entry, 'id'>;

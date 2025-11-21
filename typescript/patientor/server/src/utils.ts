@@ -1,11 +1,11 @@
 import { z } from 'zod';
-import { Gender, NewPatient } from "./types";
+import { NewEntry, Gender, NewPatient } from "./types";
+
 
 // -----------------------------------------------------------------------
-// Type substitutions
+// Entry
 // -----------------------------------------------------------------------
 export const BaseEntrySchema = z.object({
-  id: z.string(),
   description: z.string(),
   date: z.string().date(),
   specialist: z.string(),
@@ -45,6 +45,13 @@ export const EntrySchema = z.discriminatedUnion('type', [
 ]);
 
 
+export const toNewEntry = (object: unknown): NewEntry =>
+  EntrySchema.parse(object);
+
+
+// -----------------------------------------------------------------------
+// Patient
+// -----------------------------------------------------------------------
 export const NewPatientSchema = z.object({
   name: z.string(),
   gender: z.nativeEnum(Gender),
