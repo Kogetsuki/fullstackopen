@@ -1,4 +1,7 @@
 import type { Diagnosis, Entry } from "../../../types";
+import HealthCheckEntry from "./HealthCheckEntry";
+import HospitalEntry from "./HospitalEntry";
+import OccupationalHealthcareEntry from "./OccupationalHealthcareEntry";
 
 
 interface Props {
@@ -7,22 +10,24 @@ interface Props {
 }
 
 const Entry = ({ entry, diagnoses }: Props) => {
-  const getDiagnosis = (code: string): Diagnosis | undefined =>
-    diagnoses.find(d => d.code === code);
+  const assertNever = (value: never): never => {
+    throw new Error(`Unhandled entry type ${JSON.stringify(value)}`);
+  };
 
 
-  return (
-    <div key={entry.id}>
-      {entry.date} <i>{entry.description}</i>
-      <ul>
-        {entry.diagnosisCodes?.map(code =>
-          <li key={code}>
-            {code} {getDiagnosis(code)?.name}
-          </li>
-        )}
-      </ul>
-    </div>
-  );
+  switch (entry.type) {
+    case 'Hospital':
+      return <HospitalEntry entry={entry} diagnoses={diagnoses} />;
+
+    case 'HealthCheck':
+      return <HealthCheckEntry entry={entry} diagnoses={diagnoses} />;
+
+    case 'OccupationalHealthcare':
+      return <OccupationalHealthcareEntry entry={entry} diagnoses={diagnoses} />;
+
+    default:
+      return assertNever(entry);
+  }
 };
 
 

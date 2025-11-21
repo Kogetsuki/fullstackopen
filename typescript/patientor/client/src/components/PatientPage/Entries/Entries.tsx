@@ -28,7 +28,7 @@ const Entries = ({ patient }: Props) => {
       <h2>entries</h2>
 
       {patient.entries.map(entry =>
-        <Entry entry={entry} diagnoses={diagnoses} />
+        <Entry key={entry.id} entry={entry} diagnoses={diagnoses} />
       )}
     </>
   );
