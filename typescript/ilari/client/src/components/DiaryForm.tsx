@@ -33,7 +33,7 @@ const DiaryForm = ({ createDiary }: { createDiary: (d: DiaryEntry) => void; }) =
       if (error instanceof Error)
         setError(error.message);
       else
-        setError('Unkonw error');
+        setError('Unknown error');
     }
 
     date.reset();

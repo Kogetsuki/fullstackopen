@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import { Patient } from "../../types";
+import { Entry, Patient } from "../../types";
 
 import patientService from "../../services/patients";
 
 import GenderIcon from "./GenderIcon";
 import Entries from "./Entries/Entries";
+import EntryForm from "./Entries/EntryForm";
 
 
 const PatientPage = () => {
@@ -27,6 +28,17 @@ const PatientPage = () => {
   }, [id]);
 
 
+  const onAddEntry = (entry: Entry) => {
+    if (!patient)
+      return;
+
+    setPatient({
+      ...patient,
+      entries: patient.entries.concat(entry)
+    });
+  };
+
+
   if (!patient)
     return <div>Loading</div>;
 
@@ -42,6 +54,7 @@ const PatientPage = () => {
       <div>SSN: {patient.ssn}</div>
       <div>Occupation: {patient.occupation}</div>
 
+      <EntryForm patient={patient} onAddEntry={onAddEntry} />
       <Entries patient={patient} />
     </>
   );

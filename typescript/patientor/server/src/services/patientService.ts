@@ -19,7 +19,7 @@ const addPatient = (patient: NewPatient): Patient => {
 };
 
 
-const addEntry = (id: string, entry: NewEntry): Patient | undefined => {
+const addEntry = (id: string, entry: NewEntry): Entry => {
   const patient = findById(id);
 
   if (!patient)
@@ -31,7 +31,7 @@ const addEntry = (id: string, entry: NewEntry): Patient | undefined => {
   };
 
   patient.entries.push(newEntry);
-  return patient;
+  return newEntry;
 };
 
 

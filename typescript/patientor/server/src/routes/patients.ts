@@ -27,9 +27,9 @@ router.post('/:id/entries', (req, res) => {
 
   try {
     const newEntry: NewEntry = toNewEntry(req.body);
-    const updatedPatient: Patient | undefined = patientService.addEntry(patientId, newEntry);
+    const addedEntry = patientService.addEntry(patientId, newEntry);
 
-    res.json(updatedPatient);
+    res.json(addedEntry);
   }
   catch (error: unknown) {
     if (error instanceof Error)
