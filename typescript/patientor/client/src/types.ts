@@ -17,7 +17,6 @@ export interface Patient {
   entries: Entry[];
 }
 
-export type PatientFormValues = Omit<Patient, "id" | "entries">;
 
 // -----------------------------------------------------------------------
 // Entry
@@ -75,9 +74,19 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
+
+// -----------------------------------------------------------------------
+// Type for adding
+// -----------------------------------------------------------------------
+export type PatientFormValues = Omit<Patient, "id" | "entries">;
+
 export type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 export type NewEntry = UnionOmit<Entry, 'id'>;
 export type NewBaseEntry = UnionOmit<BaseEntry, 'id'>;
 
 
+// -----------------------------------------------------------------------
+// Custom types
+// -----------------------------------------------------------------------
 export type UseField = ReturnType<typeof import('./hooks/index').useField>;
+export type UseMultiField = ReturnType<typeof import('./hooks/index').useMultiField>;

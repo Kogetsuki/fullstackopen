@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import { useField } from '../../../hooks';
-import { Entry, NewEntry, Patient } from '../../../types';
-import patientService from '../../../services/patients';
+import { useField, useMultiField } from '../../../../hooks';
+import { Entry, NewEntry, Patient } from '../../../../types';
+import patientService from '../../../../services/patients';
 
-import { Button, Box, Typography, Alert, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import {
+  Button,
+  Box,
+  Typography,
+  Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent
+} from '@mui/material';
 
-import BaseEntryFields from './EntryForm/BaseEntryFields';
-import HealthCheckForm from './EntryForm/HealthCheckForm';
-import HospitalForm from './EntryForm/HospitalForm';
-import OccupationalForm from './EntryForm/OccupationalForm';
+import BaseEntryFields from './BaseEntryFields';
+import HealthCheckForm from './HealthCheckForm';
+import HospitalForm from './HospitalForm';
+import OccupationalForm from './OccupationalForm';
 
 
 interface Props {
@@ -21,21 +31,21 @@ interface Props {
 const EntryForm = ({ patient, onAddEntry }: Props) => {
   // BaseEntry fields
   const description = useField('text');
-  const date = useField('text');
+  const date = useField('date');
   const specialist = useField('text');
-  const diagnosisCodes = useField('text');
+  const diagnosisCodes = useMultiField();
   // HealthCheckEntry fields
   const healthCheckRating = useField('number');
   // HospitalEntry fields
-  const dischargeDate = useField('text');
+  const dischargeDate = useField('date');
   const dischargeCriteria = useField('text');
   // OccupationalHealthcareEntry fields
   const employerName = useField('text');
-  const sickLeaveStart = useField('text');
-  const sickLeaveEnd = useField('text');
+  const sickLeaveStart = useField('date');
+  const sickLeaveEnd = useField('date');
 
   const [error, setError] = useState<string | null>(null);
-  const [entryType, setEntryType] = useState<NewEntry['type']>('HealthCheck');
+  const [entryType, setEntryType] = useState<NewEntry['type']>();
 
 
   const resetFields = () => {
@@ -60,7 +70,7 @@ const EntryForm = ({ patient, onAddEntry }: Props) => {
       description: description.value,
       date: date.value,
       specialist: specialist.value,
-      diagnosisCodes: diagnosisCodes.value.split(/\s*,\s*/),
+      diagnosisCodes: diagnosisCodes.values
     };
 
     let newEntry: NewEntry;
@@ -131,6 +141,14 @@ const EntryForm = ({ patient, onAddEntry }: Props) => {
   };
 
 
+  const handleEntryTypeChange = (event: SelectChangeEvent) => {
+    const value = event.target.value as NewEntry['type'];
+    setEntryType(value);
+
+
+  };
+
+
   return (
     <Box
       border={1}
@@ -139,7 +157,7 @@ const EntryForm = ({ patient, onAddEntry }: Props) => {
       mt={4}
     >
       <Typography variant='h6'>
-        New Entry
+        New {entryType} Entry
       </Typography>
 
       {error && <Alert severity='error'>{error}</Alert>}
@@ -147,11 +165,12 @@ const EntryForm = ({ patient, onAddEntry }: Props) => {
       <form onSubmit={handleSubmit}>
         {/* Type Selector */}
         <FormControl fullWidth margin='normal'>
-          <InputLabel>Entry Type</InputLabel>
+          <InputLabel shrink>Entry Type</InputLabel>
           <Select
             value={entryType}
             label='Entry Type'
-            onChange={(e) => setEntryType(e.target.value as NewEntry['type'])}
+            displayEmpty
+            onChange={handleEntryTypeChange}
           >
             <MenuItem value='HealthCheck'>HealthCheck</MenuItem>
             <MenuItem value='Hospital'>Hospital</MenuItem>
@@ -188,29 +207,29 @@ const EntryForm = ({ patient, onAddEntry }: Props) => {
             sickLeaveEnd={sickLeaveEnd}
           />
         )}
+
+        <Box
+          display='flex'
+          justifyContent='space-between'
+          mt={2}
+        >
+          <Button
+            variant='contained'
+            color='error'
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant='contained'
+            color='primary'
+            type='submit'
+          >
+            Add
+          </Button>
+        </Box>
       </form>
-
-      <Box
-        display='flex'
-        justifyContent='space-between'
-        mt={2}
-      >
-        <Button
-          variant='contained'
-          color='error'
-          onClick={handleCancel}
-        >
-          Cancel
-        </Button>
-
-        <Button
-          variant='contained'
-          color='primary'
-          type='submit'
-        >
-          Add
-        </Button>
-      </Box>
     </Box>
   );
 };

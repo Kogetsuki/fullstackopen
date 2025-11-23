@@ -1,51 +1,67 @@
-import { TextField } from "@mui/material";
-import { UseField } from "../../../../types";
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select, TextField } from "@mui/material";
+import { UseField, UseMultiField } from "../../../../types";
+import { getDiagnoses } from "../../../../selectors/diagnoseSelectors";
+import { ReactNode } from "react";
 
 
 interface Props {
   description: UseField,
   date: UseField,
   specialist: UseField,
-  diagnosisCodes: UseField;
+  diagnosisCodes: UseMultiField;
 }
 
 
-const BaseEntryFields = ({ description, date, specialist, diagnosisCodes }: Props) => (
-  <>
-    <TextField
-      fullWidth
-      label='Description'
-      margin='normal'
-      InputLabelProps={{ shrink: true }}
-      {...description.input}
-    />
+const BaseEntryFields = ({ description, date, specialist, diagnosisCodes }: Props) => {
+  const renderDiagnosisCodesMenuItems = (): ReactNode =>
+    getDiagnoses().map(d =>
+      <MenuItem key={d.code} value={d.code}>
+        <Checkbox checked={diagnosisCodes.values.includes(d.code)} />
+        <ListItemText primary={d.code} />
+      </MenuItem>
+    );
 
-    <TextField
-      fullWidth
-      label='Date'
-      InputLabelProps={{ shrink: true }}
-      margin='normal'
-      {...date.input}
-    />
 
-    <TextField
-      fullWidth
-      label='Specialist'
-      margin='normal'
-      InputLabelProps={{ shrink: true }}
-      {...specialist.input}
-    />
+  return (
+    <>
+      <TextField
+        fullWidth
+        label='Description'
+        margin='normal'
+        InputLabelProps={{ shrink: true }}
+        {...description.input}
+      />
 
-    <TextField
-      fullWidth
-      label='Diagnosis codes'
-      placeholder='Z57.1, N30.0'
-      margin='normal'
-      InputLabelProps={{ shrink: true }}
-      {...diagnosisCodes.input}
-    />
-  </>
-);
+      <TextField
+        fullWidth
+        label='Date'
+        InputLabelProps={{ shrink: true }}
+        margin='normal'
+        {...date.input}
+      />
 
+      <TextField
+        fullWidth
+        label='Specialist'
+        margin='normal'
+        InputLabelProps={{ shrink: true }}
+        {...specialist.input}
+      />
+
+      <FormControl fullWidth margin='normal' variant='outlined'>
+        <InputLabel shrink>Diagnosis Codes</InputLabel>
+        <Select
+          label='Diagnosis Code'
+          displayEmpty
+          multiple
+          renderValue={(selected) => (selected as string[]).join(', ')}
+          {...diagnosisCodes.input}
+        >
+          {renderDiagnosisCodesMenuItems()}
+        </Select>
+      </FormControl>
+    </>
+  );
+};
 
 export default BaseEntryFields;

@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { UseField } from "../../../../types";
 
 interface Props {
@@ -9,21 +9,29 @@ interface Props {
 
 const HospitalForm = ({ dischargeDate, dischargeCriteria }: Props) => (
   <>
-    <TextField
-      fullWidth
-      label='Discharge date'
-      margin='normal'
-      InputLabelProps={{ shrink: true }}
-      {...dischargeDate.input}
-    />
+    <Box mt={2} mb={1}>
+      <Typography variant='subtitle2'>
+        Discharge
+      </Typography>
+    </Box>
 
-    <TextField
-      fullWidth
-      label='Discharge criteria'
-      margin='normal'
-      InputLabelProps={{ shrink: true }}
-      {...dischargeCriteria.input}
-    />
+    <Box display='flex' gap={5}>
+      <TextField
+        fullWidth
+        label='Date'
+        margin='normal'
+        InputLabelProps={{ shrink: true }}
+        {...dischargeDate.input}
+      />
+
+      <TextField
+        fullWidth
+        label='Criteria'
+        margin='normal'
+        InputLabelProps={{ shrink: true }}
+        {...dischargeCriteria.input}
+      />
+    </Box>
   </>
 );
 

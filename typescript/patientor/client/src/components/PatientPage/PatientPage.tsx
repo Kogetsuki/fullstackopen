@@ -7,7 +7,7 @@ import patientService from "../../services/patients";
 
 import GenderIcon from "./GenderIcon";
 import Entries from "./Entries/Entries";
-import EntryForm from "./Entries/EntryForm";
+import EntryForm from "./Entries/EntryForm/EntryForm";
 
 
 const PatientPage = () => {

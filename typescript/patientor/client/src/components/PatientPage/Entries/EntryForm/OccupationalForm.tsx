@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { UseField } from "../../../../types";
 
 
@@ -19,21 +19,29 @@ const OccupationalForm = ({ employerName, sickLeaveStart, sickLeaveEnd }: Props)
       {...employerName.input}
     />
 
-    <TextField
-      fullWidth
-      label='Sick leave start'
-      margin='normal'
-      InputLabelProps={{ shrink: true }}
-      {...sickLeaveStart.input}
-    />
+    <Box mt={2} mb={1}>
+      <Typography variant='subtitle2'>
+        Sick Leave
+      </Typography>
+    </Box>
 
-    <TextField
-      fullWidth
-      label='Sick leave end'
-      margin='normal'
-      InputLabelProps={{ shrink: true }}
-      {...sickLeaveEnd.input}
-    />
+    <Box display='flex' gap={5}>
+      <TextField
+        fullWidth
+        label='Start'
+        margin='normal'
+        InputLabelProps={{ shrink: true }}
+        {...sickLeaveStart.input}
+      />
+
+      <TextField
+        fullWidth
+        label='End'
+        margin='normal'
+        InputLabelProps={{ shrink: true }}
+        {...sickLeaveEnd.input}
+      />
+    </Box>
   </>
 );
 
