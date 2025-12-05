@@ -25,34 +25,34 @@ jobs:
       #                                 Frontend
       # ------------------------------------------------------------------------
       - name: Install frontend dependencies
-        working-directory: frontend
+        working-directory: phonebook-ci-cd/frontend
         run: npm install
 
       - name: Lint frontend
-        working-directory: frontend
+        working-directory: phonebook-ci-cd/frontend
         run: npm run lint
 
       - name: Build frontend
-        working-directory: frontend
+        working-directory: phonebook-ci-cd/frontend
         run: npm run build
 
       - name: Unit test frontend
-        working-directory: frontend
+        working-directory: phonebook-ci-cd/frontend
         run: npm run test
 
       # ------------------------------------------------------------------------
       #                                 Backend
       # ------------------------------------------------------------------------
       - name: Install backend dependencies
-        working-directory: backend
+        working-directory: phonebook-ci-cd/backend
         run: npm install
 
       - name: Lint backend
-        working-directory: backend
+        working-directory: phonebook-ci-cd/backend
         run: npm run lint
 
       - name: Backend tests
-        working-directory: backend
+        working-directory: phonebook-ci-cd/backend
         run: npm run test
 
       # ------------------------------------------------------------------------
