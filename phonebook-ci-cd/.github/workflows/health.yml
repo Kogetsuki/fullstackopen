@@ -1,0 +1,32 @@
+name: Phonebook Health Check
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  health_chek:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check deployment health
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: https://fso-ci-cd-0q26.onrender.com/
+          max-attempts: 3
+          retry-delay: 5s
+          follow-redirect: true
+          expected-statuses: 200
+
+      - name: Notify Discord on failure
+        if: failure()
+        uses: rjstone/discord-webhook-notify@v2.2.1
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          username: CI Bot
+          avatarUrl: https://i.imgur.com/4M34hi2.png
+          severity: error
+          title: "Health Check failed"
+          description: "The periodic health check failed for <https://fso-ci-cd-0q26.onrender.com/>"
+          footer: "Health Monitor"

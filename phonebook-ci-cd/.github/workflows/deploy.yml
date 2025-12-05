@@ -1,0 +1,104 @@
+name: Phonebook Deployment Pipeline
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+env:
+  ON_MAIN_PUSH: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+  SKIP_RELEASE: ${{ contains(join(github.event.commits.*.message, ' '), '#skip') }}
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # ------------------------------------------------------------------------
+      #                                 Frontend
+      # ------------------------------------------------------------------------
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Lint frontend
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Unit test frontend
+        working-directory: frontend
+        run: npm run test
+
+      # ------------------------------------------------------------------------
+      #                                 Backend
+      # ------------------------------------------------------------------------
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm install
+
+      - name: Lint backend
+        working-directory: backend
+        run: npm run lint
+
+      - name: Backend tests
+        working-directory: backend
+        run: npm run test
+
+      # ------------------------------------------------------------------------
+      #                                 Deploy
+      # ------------------------------------------------------------------------
+      - name: Deploy to render
+        if: env.ON_MAIN_PUSH == 'true' && env.SKIP_RELEASE == 'false'
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+
+      # ------------------------------------------------------------------------
+      #                                 Failure notification
+      # ------------------------------------------------------------------------
+      - name: Notify Discord on failure
+        if: failure()
+        uses: rjstone/discord-webhook-notify@v2.2.1
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          username: CI Bot
+          avatarUrl: https://i.imgur.com/4M34hi2.png
+          severity: error
+          title: "Build failed"
+          description: "Commit [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) by ${{ github.actor }}"
+          footer: "Severity: Error"
+
+  tag_release:
+    needs: [build_and_test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bump version
+        if: env.ON_MAIN_PUSH == 'true' && env.SKIP_RELEASE == 'false'
+        uses: anothrNick/github-tag-action@1.75.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+
+      - name: Notify Discord on success
+        if: success()
+        uses: rjstone/discord-webhook-notify@v2.2.1
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          username: CI Bot
+          avatarUrl: https://i.imgur.com/4M34hi2.png
+          severity: info
+          title: "A new version of Pokedex deployed"
+          description: "Version **${{ steps.tag.outputs.new_tag }}** deployed to <https://fso-ci-cd-0q26.onrender.com/> by ${{ github.actor }}"
+          footer: "Severity: Informational"

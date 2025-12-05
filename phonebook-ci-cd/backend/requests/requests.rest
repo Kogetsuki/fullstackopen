@@ -1,0 +1,39 @@
+@localUrl = http://localhost:3001
+@baseUrl = https://phonebook-kj3t.onrender.com
+@id = 68ed6136cbed5a1e933ba54e
+
+
+### Get all persons
+GET {{baseUrl}}/api/persons
+
+
+### Get a person info
+GET {{baseUrl}}/api/persons/{{id}}
+
+
+### Get phonebook info
+GET {{baseUrl}}/info
+
+
+### Add person
+POST {{localUrl}}/api/persons
+Content-Type: application/json
+
+{
+  "name": "en",
+  "number": "00000000000000"
+}
+
+
+### Delete person
+DELETE {{localUrl}}/api/persons/{{id}}
+
+
+### Update person
+PUT {{localUrl}}/api/persons/{{id}}
+Content-Type: application/json
+
+{
+  "name": "Anngrda",
+  "number": "55"
+}
