@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
-import Person from './models/person'
+import Person from './models/person.js'
 
 dotenv.config()
 const app = express()
