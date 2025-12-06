@@ -1,8 +1,9 @@
-require('dotenv').config()
-const express = require('express')
-const morgan = require('morgan')
-const Person = require('./models/person')
+import dotenv from 'dotenv'
+import express from 'express'
+import morgan from 'morgan'
+import Person from './models/person'
 
+dotenv.config()
 const app = express()
 
 /* ----------------- HELPERS --------------------- */
