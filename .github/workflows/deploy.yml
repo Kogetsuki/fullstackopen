@@ -62,8 +62,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           wait_deploy: true
           clear_cache: false
-          github_deployment: true
-          deployment_environment: production
 
       # ------------------------------------------------------------------------
       #                                 Failure notification
