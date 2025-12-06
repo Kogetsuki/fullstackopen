@@ -56,7 +56,7 @@ app.get('/info', (req, res) => {
 
 
 app.get('/health', (req, res) => {
-  res.send('ok')
+  res.send('New ok')
 })
 
 
