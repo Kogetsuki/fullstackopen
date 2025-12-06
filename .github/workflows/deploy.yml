@@ -55,7 +55,12 @@ jobs:
       # ------------------------------------------------------------------------
       - name: Deploy to render
         if: env.ON_MAIN_PUSH == 'true' && env.SKIP_RELEASE == 'false'
-        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+        uses: JorgeLNJunior/render-deploy@v1.4.6
+        with:
+          service_id: ${{ secrets.RENDER_SERVICE_ID }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          wait_deploy: true
 
       # ------------------------------------------------------------------------
       #                                 Failure notification
