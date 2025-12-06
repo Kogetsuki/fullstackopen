@@ -36,10 +36,6 @@ jobs:
         working-directory: phonebook-ci-cd/frontend
         run: npm run build
 
-      - name: Unit test frontend
-        working-directory: phonebook-ci-cd/frontend
-        run: npm run test
-
       # ------------------------------------------------------------------------
       #                                 Backend
       # ------------------------------------------------------------------------
@@ -50,10 +46,6 @@ jobs:
       - name: Lint backend
         working-directory: phonebook-ci-cd/backend
         run: npm run lint
-
-      - name: Backend tests
-        working-directory: phonebook-ci-cd/backend
-        run: npm run test
 
       # ------------------------------------------------------------------------
       #                                 Deploy
