@@ -72,7 +72,7 @@ jobs:
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           username: CI Bot
-          avatarUrl: https://i.imgur.com/4M34hi2.png
+          avatarUrl: https://github.com/Kogetsuki/fullstackopen/blob/deploy-pipeline/phonebook-ci-cd/assets/avatar.png
           severity: error
           title: "Build failed"
           description: "Commit [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) by ${{ github.actor }}"
@@ -98,10 +98,10 @@ jobs:
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           username: CI Bot
-          avatarUrl: https://i.imgur.com/4M34hi2.png
+          avatarUrl: https://github.com/Kogetsuki/fullstackopen/blob/deploy-pipeline/phonebook-ci-cd/assets/avatar.png
           severity: info
           title: "A new version of Phonebook deployed"
-          description: "Version **${{ steps.tag.outputs.new_tag }}** deployed to <https://fso-ci-cd-0q26.onrender.com/> by ${{ github.actor }}"
+          description: "Version **${{ steps.tag.outputs.new_tag }}** deployed to <https://phonebook-kj3t.onrender.com> by ${{ github.actor }}"
           footer: "Severity: Informational"
 
       - name: Notify Discord on failure
@@ -110,7 +110,7 @@ jobs:
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           username: CI Bot
-          avatarUrl: https://i.imgur.com/4M34hi2.png
+          avatarUrl: https://github.com/Kogetsuki/fullstackopen/blob/deploy-pipeline/phonebook-ci-cd/assets/avatar.png
           severity: error
           title: "Tagging failed"
           description: "Commit [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) by ${{ github.actor }}"

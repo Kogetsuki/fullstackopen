@@ -13,7 +13,7 @@ jobs:
       - name: Check deployment health
         uses: jtalk/url-health-check-action@v4
         with:
-          url: https://fso-ci-cd-0q26.onrender.com/
+          url: https://phonebook-kj3t.onrender.com
           max-attempts: 3
           retry-delay: 5s
           follow-redirect: true
@@ -25,8 +25,8 @@ jobs:
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           username: CI Bot
-          avatarUrl: https://i.imgur.com/4M34hi2.png
+          avatarUrl: https://github.com/Kogetsuki/fullstackopen/blob/deploy-pipeline/phonebook-ci-cd/assets/avatar.png
           severity: error
           title: "Health Check failed"
-          description: "The periodic health check failed for <https://fso-ci-cd-0q26.onrender.com/>"
+          description: "The periodic health check failed for <https://phonebook-kj3t.onrender.com>"
           footer: "Health Monitor"
